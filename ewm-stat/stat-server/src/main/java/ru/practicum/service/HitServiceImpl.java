@@ -2,13 +2,13 @@ package ru.practicum.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.CreateHitDto;
 import ru.practicum.dto.HitDto;
 import ru.practicum.dto.ViewStatDto;
 import ru.practicum.models.Hit;
 import ru.practicum.repository.HitRepository;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,11 +26,14 @@ public class HitServiceImpl implements HitService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ViewStatDto> getStat(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
+        List<ViewStatDto> result;
         if (uris.isEmpty()) {
-            return ViewStatMapper.toViewStatDto(hitRepository.getViewStat(start, end));
+            result = ViewStatMapper.toViewStatDto(hitRepository.getViewStat(start, end));
+        } else {
+            result = ViewStatMapper.toViewStatDto(hitRepository.getViewStat(start, end, uris, unique));
         }
-        return ViewStatMapper.toViewStatDto(hitRepository.getViewStat(start, end, uris, unique));
+        return result;
     }
 }

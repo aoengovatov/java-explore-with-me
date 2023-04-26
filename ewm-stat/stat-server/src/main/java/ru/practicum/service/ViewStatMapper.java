@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class ViewStatMapper {
-    public static List<ViewStatDto> toViewStatDto(List<ViewStat> viewStats) {
+    public List<ViewStatDto> toViewStatDto(List<ViewStat> viewStats) {
         return viewStats.stream()
                 .map(viewStat -> new ViewStatDto(viewStat.getApp(), viewStat.getUri(),
                         viewStat.getHits()))

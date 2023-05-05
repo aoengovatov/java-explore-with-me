@@ -1,5 +1,6 @@
 package ru.practicum.client;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -8,8 +9,9 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.dto.CreateHitDto;
+import ru.practicum.dto.ViewStatDto;
 
-import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ import java.util.Map;
 public class StatClient extends BaseClient {
 
     @Autowired
-    public StatClient(@Value("${stat-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public StatClient(@Value("http://stat-server:9090") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
@@ -30,16 +32,22 @@ public class StatClient extends BaseClient {
         return post("/hit", dto);
     }
 
-    public ResponseEntity<Object> getStat(LocalDateTime start,
-                                          LocalDateTime end,
-                                          List<String> uris,
-                                          Boolean unique) {
+
+    public List<ViewStatDto> getStat(String start,
+                                       String end,
+                                       List<String> uris,
+                                       Boolean unique) {
+        Gson gson = new Gson();
         Map<String,Object> parameters = Map.of(
                 "start", start,
                 "end", end,
                 "uris", String.join(",", uris),
                 "unique", unique
         );
-        return get("/stats", parameters);
+        ResponseEntity<Object> objectResponseEntity =
+                get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
+        String json = gson.toJson(objectResponseEntity.getBody());
+        ViewStatDto[] viewStatDto = gson.fromJson(json, ViewStatDto[].class);
+        return Arrays.asList(viewStatDto);
     }
 }

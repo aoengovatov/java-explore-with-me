@@ -23,7 +23,7 @@ public class Compilation {
     private String title;
 
     @Column(name = "pinned", nullable = false)
-    private Boolean pinned;
+    private boolean pinned;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "compilation_events", joinColumns = @JoinColumn(name = "compilation_id"),

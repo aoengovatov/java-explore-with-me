@@ -2,6 +2,7 @@ package ru.practicum.categories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public List<CategoryDto> getAll(Integer from, Integer size) {
-        List<Category> categories = categoryRepository.getAll(new MyPageRequest(from, size, Sort.unsorted()));
+        Page<Category> categories = categoryRepository.findAll(new MyPageRequest(from, size, Sort.unsorted()));
         if (categories.isEmpty()) {
             throw new CategoryNotFoundException("Categories was not found");
         }

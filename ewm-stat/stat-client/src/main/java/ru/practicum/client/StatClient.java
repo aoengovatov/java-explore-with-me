@@ -19,7 +19,7 @@ import java.util.Map;
 public class StatClient extends BaseClient {
 
     @Autowired
-    public StatClient(@Value("http://stat-server:9090") String serverUrl, RestTemplateBuilder builder) {
+    public StatClient(@Value("${SERVICE_STAT_SERVER_URL}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))

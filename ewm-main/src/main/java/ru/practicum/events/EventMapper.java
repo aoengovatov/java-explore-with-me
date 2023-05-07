@@ -107,7 +107,6 @@ public class EventMapper {
         event.setParticipantLimit(eventCreateDto.getParticipantLimit());
         event.setRequestModeration(eventCreateDto.getRequestModeration());
         event.setTitle(eventCreateDto.getTitle());
-        event.setState(eventCreateDto.getState());
         return event;
     }
 

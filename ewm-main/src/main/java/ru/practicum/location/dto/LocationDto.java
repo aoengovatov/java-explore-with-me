@@ -10,7 +10,7 @@ public class LocationDto {
 
     private Long id;
 
-    private float lat;
+    private Float lat;
 
-    private float lon;
+    private Float lon;
 }

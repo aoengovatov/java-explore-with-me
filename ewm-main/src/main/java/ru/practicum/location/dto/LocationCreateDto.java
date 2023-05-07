@@ -1,6 +1,9 @@
 package ru.practicum.location.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,10 +16,10 @@ public class LocationCreateDto {
     private Long id;
 
     @NotNull
-    private float lat;
+    private Float lat;
 
     @NotNull
-    private float lon;
+    private Float lon;
 
     public LocationCreateDto(float lat, float lon) {
         this.lat = lat;

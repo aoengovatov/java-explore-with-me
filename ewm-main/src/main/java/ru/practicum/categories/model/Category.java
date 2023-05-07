@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Table(name = "categories")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {

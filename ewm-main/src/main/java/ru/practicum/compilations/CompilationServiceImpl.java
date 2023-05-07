@@ -46,9 +46,7 @@ public class CompilationServiceImpl implements CompilationService {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new CompilationNotFoundException("Compilation with id="
                         + compId + " was not found"));
-        if (checkNull(dto.getPinned())) {
-            compilation.setPinned(dto.getPinned());
-        }
+        compilation.setPinned(dto.isPinned());
         if (checkNullOrBlank(dto.getTitle())) {
             compilation.setTitle(dto.getTitle());
         }

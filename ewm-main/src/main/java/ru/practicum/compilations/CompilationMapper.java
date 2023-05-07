@@ -15,13 +15,13 @@ public class CompilationMapper {
         Compilation compilation = new Compilation();
         compilation.setEvents(new HashSet<>());
         compilation.setTitle(dto.getTitle());
-        compilation.setPinned(dto.getPinned());
+        compilation.setPinned(dto.isPinned());
 
         return compilation;
     }
 
     public CompilationDto toCompilationDto(Compilation compilation) {
-        return new CompilationDto(compilation.getId(), compilation.getPinned(),
+        return new CompilationDto(compilation.getId(), compilation.isPinned(),
                 compilation.getTitle(), EventMapper.toEventDto(compilation.getEvents()));
     }
 }

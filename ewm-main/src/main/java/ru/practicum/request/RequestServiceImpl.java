@@ -6,8 +6,8 @@ import ru.practicum.events.EventRepository;
 import ru.practicum.events.EventService;
 import ru.practicum.events.EventStatus;
 import ru.practicum.events.model.Event;
+import ru.practicum.exception.EntityNotFoundException;
 import ru.practicum.exception.FieldValidationException;
-import ru.practicum.exception.RequestNotFoundException;
 import ru.practicum.request.dto.RequestDto;
 import ru.practicum.request.dto.RequestUpdateStatusDto;
 import ru.practicum.request.dto.RequestUpdateStatusResultDto;
@@ -81,7 +81,7 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public RequestDto cancel(Long userId, Long requestId) {
         Request request = requestRepository.findByIdAndUserId(userId, requestId)
-                .orElseThrow(() -> new RequestNotFoundException("Request with id=" + requestId + "was not found"));
+                .orElseThrow(() -> new EntityNotFoundException(Request.class, requestId));
         request.setState(RequestStatus.CANCELED);
         return RequestMapper.requestToRequestDto(request);
     }

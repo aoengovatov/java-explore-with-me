@@ -5,8 +5,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.common.MyPageRequest;
+import ru.practicum.exception.EntityNotFoundException;
 import ru.practicum.exception.FieldValidationException;
-import ru.practicum.exception.UserNotFoundException;
 import ru.practicum.users.dto.UserCreateDto;
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.model.User;
@@ -45,14 +45,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delete(Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id=" + userId + "was not found"));
+                .orElseThrow(() -> new EntityNotFoundException(User.class, userId));
         userRepository.deleteById(userId);
     }
 
     @Override
     public UserDto getById(Long userId) {
         return UserMapper.userToUserDto(userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id=" + userId + "was not found")));
+                .orElseThrow(() -> new EntityNotFoundException(User.class, userId)));
     }
 
     private void checkUserNameExists(String name) {

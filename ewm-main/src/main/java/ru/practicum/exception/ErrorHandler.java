@@ -17,19 +17,7 @@ import java.util.List;
 public class ErrorHandler {
 
     @ExceptionHandler
-    public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException e) {
-        return apiErrorResponseEntity(e.getMessage(), e,
-                "The required object was not found.", HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ApiError> handleCategoryNotFoundException(CategoryNotFoundException e) {
-        return apiErrorResponseEntity(e.getMessage(), e,
-                "The required object was not found.", HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ApiError> handleEventNotFoundException(EventNotFoundException e) {
+    public ResponseEntity<ApiError> handleEntityNotFoundException(EntityNotFoundException e) {
         return apiErrorResponseEntity(e.getMessage(), e,
                 "The required object was not found.", HttpStatus.NOT_FOUND);
     }

@@ -11,7 +11,7 @@ import ru.practicum.compilations.dto.CompilationUpdateDto;
 import ru.practicum.compilations.model.Compilation;
 import ru.practicum.events.EventRepository;
 import ru.practicum.events.model.Event;
-import ru.practicum.exception.CompilationNotFoundException;
+import ru.practicum.exception.EntityNotFoundException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -44,8 +44,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     public CompilationDto update(Long compId, CompilationUpdateDto dto) {
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new CompilationNotFoundException("Compilation with id="
-                        + compId + " was not found"));
+                .orElseThrow(() -> new EntityNotFoundException(Compilation.class, compId));
         compilation.setPinned(dto.isPinned());
         if (checkNullOrBlank(dto.getTitle())) {
             compilation.setTitle(dto.getTitle());
@@ -60,8 +59,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto getById(Long compId) {
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new CompilationNotFoundException("Compilation with id="
-                        + compId + " was not found"));
+                .orElseThrow(() -> new EntityNotFoundException(Compilation.class, compId));
         return CompilationMapper.toCompilationDto(compilation);
     }
 

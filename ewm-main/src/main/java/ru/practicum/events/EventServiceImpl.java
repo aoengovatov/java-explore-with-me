@@ -19,7 +19,7 @@ import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventUpdateDto;
 import ru.practicum.events.model.Event;
 import ru.practicum.exception.CheckStatusException;
-import ru.practicum.exception.EventNotFoundException;
+import ru.practicum.exception.EntityNotFoundException;
 import ru.practicum.exception.FieldValidationException;
 import ru.practicum.location.LocationMapper;
 import ru.practicum.location.LocationService;
@@ -70,7 +70,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public EventDto updateFromUser(Long userId, Long eventId, EventUpdateDto dto) {
         Event event = eventRepository.getByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + "was not found"));
+                .orElseThrow(() -> new EntityNotFoundException(Event.class, eventId));
         checkEventStatusBeforeUpdate(event.getState());
         userService.getById(userId);
         updateEventFields(event, dto);
@@ -84,7 +84,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public EventDto updateFromAdmin(Long eventId, EventUpdateDto dto) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + "was not found"));
+                .orElseThrow(() -> new EntityNotFoundException(Event.class, eventId));
         updateEventFields(event, dto);
         EventDto eventDto = EventMapper.eventToEventDto(event);
         Map<String,Long> views = getViewsByEvents(List.of(event));
@@ -115,7 +115,7 @@ public class EventServiceImpl implements EventService {
     @Transactional(readOnly = true)
     public EventDto getPublishedById(Long eventId, HttpServletRequest request) {
         Event event = eventRepository.findByIdWithStatus(eventId, EventStatus.PUBLISHED)
-                .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + "was not found"));
+                .orElseThrow(() -> new EntityNotFoundException(Event.class, eventId));
         String ip = request.getRemoteAddr();
         String url = request.getRequestURI();
         addHit(ip, url);
@@ -129,7 +129,7 @@ public class EventServiceImpl implements EventService {
     @Transactional(readOnly = true)
     public EventDto getEventInfoByUser(Long eventId, Long userId) {
         return EventMapper.eventToEventDto(eventRepository.getByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + "was not found")));
+                .orElseThrow(() -> new EntityNotFoundException(Event.class, eventId)));
     }
 
     @Override

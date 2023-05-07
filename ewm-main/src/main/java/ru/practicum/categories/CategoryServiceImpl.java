@@ -12,7 +12,7 @@ import ru.practicum.categories.model.Category;
 import ru.practicum.common.MyPageRequest;
 import ru.practicum.events.EventRepository;
 import ru.practicum.events.model.Event;
-import ru.practicum.exception.CategoryNotFoundException;
+import ru.practicum.exception.EntityNotFoundException;
 import ru.practicum.exception.FieldValidationException;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDto> getAll(Integer from, Integer size) {
         Page<Category> categories = categoryRepository.findAll(new MyPageRequest(from, size, Sort.unsorted()));
         if (categories.isEmpty()) {
-            throw new CategoryNotFoundException("Categories was not found");
+            throw new EntityNotFoundException(Category.class);
         }
         return categories.stream()
                 .map(CategoryMapper::toCategoryDto)
@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     public CategoryDto getById(Long catId) {
         return CategoryMapper.toCategoryDto(categoryRepository.findById(catId)
-                .orElseThrow(() -> new CategoryNotFoundException("Category with id=" + catId + "was not found")));
+                .orElseThrow(() -> new EntityNotFoundException(Category.class, catId)));
     }
 
     @Override

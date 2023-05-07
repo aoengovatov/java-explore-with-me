@@ -1,8 +1,11 @@
 package ru.practicum.events.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import ru.practicum.events.EventStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.practicum.events.EventStateAction;
 import ru.practicum.location.dto.LocationDto;
 
 import javax.validation.constraints.NotBlank;
@@ -43,5 +46,5 @@ public class EventCreateDto {
     @NotBlank
     private String title;
 
-    private EventStatus state;
+    private EventStateAction state;
 }

@@ -1,8 +1,11 @@
 package ru.practicum.events.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import ru.practicum.events.EventStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.practicum.events.EventStateAction;
 import ru.practicum.location.dto.LocationCreateDto;
 
 import java.time.LocalDateTime;
@@ -30,7 +33,7 @@ public class EventUpdateDto {
 
     private Boolean requestModeration;
 
-    private EventStatus stateAction;
+    private EventStateAction stateAction;
 
     private String title;
 }

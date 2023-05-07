@@ -3,21 +3,20 @@ package ru.practicum.compilations.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompilationCreateDto {
 
     private List<Long> events;
 
-    @NotNull
-    private Boolean pinned;
+    private boolean pinned;
 
     @NotBlank
+    @Size(max = 255)
     private String title;
 }

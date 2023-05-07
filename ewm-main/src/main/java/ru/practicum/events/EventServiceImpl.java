@@ -32,10 +32,7 @@ import ru.practicum.users.dto.UserDto;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -202,8 +199,8 @@ public class EventServiceImpl implements EventService {
             event.setDescription(dto.getDescription());
         }
         if (checkNull(dto.getLocation())) {
-            if (dto.getLocation().getLat() != event.getLocation().getLat() ||
-                    dto.getLocation().getLon() != event.getLocation().getLon()) {
+            if (!Objects.equals(dto.getLocation().getLat(), event.getLocation().getLat()) ||
+                    !Objects.equals(dto.getLocation().getLon(), event.getLocation().getLon())) {
                 LocationCreateDto locationCreateDto = new LocationCreateDto(
                         dto.getLocation().getLat(), dto.getLocation().getLon());
                 Location location = LocationMapper.locationDtoToLocation(locationService.add(locationCreateDto));

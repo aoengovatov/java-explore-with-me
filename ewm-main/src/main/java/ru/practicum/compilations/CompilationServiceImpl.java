@@ -14,6 +14,7 @@ import ru.practicum.events.model.Event;
 import ru.practicum.exception.EntityNotFoundException;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -53,7 +54,7 @@ public class CompilationServiceImpl implements CompilationService {
         }
         if (dto.getEvents() != null && !dto.getEvents().isEmpty()) {
             List<Event> events = eventRepository.findAllById(dto.getEvents());
-            compilation.getEvents().addAll(events);
+            compilation.setEvents(new HashSet<>(events));
         }
         return CompilationMapper.toCompilationDto(compilation);
     }

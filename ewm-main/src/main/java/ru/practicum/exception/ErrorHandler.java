@@ -1,6 +1,7 @@
 package ru.practicum.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -41,9 +42,9 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ApiError> handleThrowableException(Throwable e) {
+    public ResponseEntity<ApiError> handleConstraintViolationException(ConstraintViolationException e) {
         return apiErrorResponseEntity(e.getMessage(), e,
-                "The request is bad ", HttpStatus.BAD_REQUEST);
+                "Integrity constraint has been violated.", HttpStatus.CONFLICT);
     }
 
     private ResponseEntity<ApiError> apiErrorResponseEntity(String message, Throwable e,

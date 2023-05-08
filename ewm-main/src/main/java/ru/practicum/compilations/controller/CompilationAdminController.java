@@ -21,7 +21,7 @@ public class CompilationAdminController {
     @Autowired
     private CompilationService compilationService;
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CompilationDto addCompilation(@RequestBody @Valid CompilationCreateDto dto) {
         return compilationService.add(dto);

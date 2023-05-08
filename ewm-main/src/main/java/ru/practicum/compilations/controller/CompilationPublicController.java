@@ -20,7 +20,7 @@ public class CompilationPublicController {
     @Autowired
     private CompilationService compilationService;
 
-    @GetMapping()
+    @GetMapping
     public List<CompilationDto> getWithFilter(@RequestParam(value = "pinned", required = false) Boolean pinned,
                                               @PositiveOrZero @RequestParam(value = "from", defaultValue = "0")
                                               Integer from,

@@ -20,7 +20,7 @@ public class CategoryPublicController {
     @Autowired
     private final CategoryService categoryService;
 
-    @GetMapping()
+    @GetMapping
     public List<CategoryDto> getAll(@PositiveOrZero @RequestParam (name = "from", defaultValue = "0") Integer from,
                                     @Positive @RequestParam (name = "size", defaultValue = "10") Integer size) {
         return categoryService.getAll(from, size);

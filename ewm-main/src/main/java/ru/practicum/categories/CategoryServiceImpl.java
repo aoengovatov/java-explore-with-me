@@ -62,10 +62,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public CategoryDto update(Long catId, CategoryDto dto) {
+    public CategoryDto update(Long catId, CategoryCreateDto dto) {
         checkCategoryExists(dto.getName());
         Category categoryUpdate = CategoryMapper.dtoToCategory(getById(catId));
-        if (dto.getName() != null && !dto.getName().isBlank()) {
+        if (dto.getName() != null) {
             categoryUpdate.setName(dto.getName());
         }
         return CategoryMapper.toCategoryDto(categoryUpdate);

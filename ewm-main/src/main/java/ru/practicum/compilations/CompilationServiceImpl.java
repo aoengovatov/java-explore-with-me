@@ -51,7 +51,7 @@ public class CompilationServiceImpl implements CompilationService {
         if (checkNullOrBlank(dto.getTitle())) {
             compilation.setTitle(dto.getTitle());
         }
-        if (!dto.getEvents().isEmpty()) {
+        if (dto.getEvents() != null && !dto.getEvents().isEmpty()) {
             List<Event> events = eventRepository.findAllById(dto.getEvents());
             compilation.getEvents().addAll(events);
         }

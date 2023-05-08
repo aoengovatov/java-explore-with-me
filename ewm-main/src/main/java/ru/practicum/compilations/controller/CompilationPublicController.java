@@ -1,8 +1,10 @@
-package ru.practicum.compilations;
+package ru.practicum.compilations.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.compilations.CompilationService;
 import ru.practicum.compilations.dto.CompilationDto;
 
 import javax.validation.constraints.Positive;
@@ -11,8 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/compilations")
+@RequiredArgsConstructor
 @Validated
-public class CompilationController {
+public class CompilationPublicController {
 
     @Autowired
     private CompilationService compilationService;

@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 import ru.practicum.events.EventStateAction;
 import ru.practicum.location.dto.LocationDto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Validated
 public class EventCreateDto {
 
     @NotBlank
@@ -28,6 +31,7 @@ public class EventCreateDto {
     private Long category;
 
     @NotNull
+    @Valid
     private LocationDto location;
 
     @NotBlank

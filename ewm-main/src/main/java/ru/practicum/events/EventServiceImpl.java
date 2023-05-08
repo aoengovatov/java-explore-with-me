@@ -1,8 +1,8 @@
 package ru.practicum.events;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,16 +36,30 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class EventServiceImpl implements EventService {
 
-    @Autowired
+    private final String appName;
     private final EventRepository eventRepository;
     private final UserService userService;
     private final CategoryService categoryService;
     private final LocationService locationService;
     private final StatClient statClient;
+
+    @Autowired
+    public EventServiceImpl(@Value("${application.name}") String appName,
+                            EventRepository eventRepository,
+                            UserService userService,
+                            CategoryService categoryService,
+                            LocationService locationService,
+                            StatClient statClient) {
+        this.eventRepository = eventRepository;
+        this.userService = userService;
+        this.categoryService = categoryService;
+        this.locationService = locationService;
+        this.statClient = statClient;
+        this.appName = appName;
+    }
 
     @Override
     @Transactional
@@ -287,6 +301,6 @@ public class EventServiceImpl implements EventService {
 
     private void addHit(String ip, String url) {
         log.info("ADD HIT ip: {}, url: {}", ip, url);
-        statClient.addHit(new CreateHitDto("ewm-main", url, ip, LocalDateTime.now()));
+        statClient.addHit(new CreateHitDto(appName, url, ip, LocalDateTime.now()));
     }
 }

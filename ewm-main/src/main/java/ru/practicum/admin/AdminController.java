@@ -4,9 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.categories.CategoryService;
-import ru.practicum.categories.dto.CategoryCreateDto;
-import ru.practicum.categories.dto.CategoryDto;
 import ru.practicum.events.EventService;
 import ru.practicum.events.EventStatus;
 import ru.practicum.events.dto.EventDto;
@@ -28,7 +25,6 @@ public class AdminController {
 
     @Autowired
     private final UserService userService;
-    private final CategoryService categoryService;
     private final EventService eventService;
 
     @GetMapping("/users")
@@ -65,23 +61,5 @@ public class AdminController {
     public EventDto updateEventById(@PathVariable Long eventId,
                                     @RequestBody EventUpdateDto dto) {
         return eventService.updateFromAdmin(eventId, dto);
-    }
-
-    @PostMapping("/categories")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto addCategory(@RequestBody @Valid CategoryCreateDto dto) {
-        return categoryService.add(dto);
-    }
-
-    @DeleteMapping("/categories/{catId}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteCategory(@PathVariable Long catId) {
-        categoryService.delete(catId);
-    }
-
-    @PatchMapping("/categories/{catId}")
-    public CategoryDto updateCategory(@RequestBody CategoryDto dto,
-                                      @PathVariable Long catId) {
-        return categoryService.update(catId, dto);
     }
 }

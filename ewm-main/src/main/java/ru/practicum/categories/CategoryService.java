@@ -15,6 +15,6 @@ public interface CategoryService {
 
     void delete(Long catId);
 
-    CategoryDto update(Long catId, CategoryDto dto);
+    CategoryDto update(Long catId, CategoryCreateDto dto);
 
 }

@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto update(Long catId, CategoryDto dto) {
         checkCategoryExists(dto.getName());
         Category categoryUpdate = CategoryMapper.dtoToCategory(getById(catId));
-        if (!dto.getName().isEmpty() && dto.getName() != null) {
+        if (dto.getName() != null && !dto.getName().isEmpty()) {
             categoryUpdate.setName(dto.getName());
         }
         return CategoryMapper.toCategoryDto(categoryUpdate);

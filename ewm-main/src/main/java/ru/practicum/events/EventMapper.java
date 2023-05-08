@@ -45,10 +45,10 @@ public class EventMapper {
         dto.setEventDate(event.getEventDate());
         dto.setInitiator(user);
         dto.setLocation(location);
-        dto.setPaid(event.getPaid());
+        dto.setPaid(event.isPaid());
         dto.setParticipantLimit(event.getParticipantLimit());
         dto.setPublishedOn(event.getPublishedOn());
-        dto.setRequestModeration(event.getRequestModeration());
+        dto.setRequestModeration(event.isRequestModeration());
         dto.setState(event.getState());
         dto.setTitle(event.getTitle());
         return dto;
@@ -75,7 +75,7 @@ public class EventMapper {
         dto.setConfirmedRequests(event.getConfirmedRequests());
         dto.setEventDate(event.getEventDate());
         dto.setInitiator(user);
-        dto.setPaid(event.getPaid());
+        dto.setPaid(event.isPaid());
         dto.setTitle(event.getTitle());
         return dto;
     }

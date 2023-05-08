@@ -20,7 +20,7 @@ public class EventDto {
 
     private CategoryDto category;
 
-    private Integer confirmedRequests;
+    private int confirmedRequests;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdOn;
@@ -34,14 +34,14 @@ public class EventDto {
 
     private LocationDto location;
 
-    private Boolean paid;
+    private boolean paid;
 
-    private Integer participantLimit;
+    private int participantLimit;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime publishedOn;
 
-    private Boolean requestModeration;
+    private boolean requestModeration;
 
     private EventStatus state;
 

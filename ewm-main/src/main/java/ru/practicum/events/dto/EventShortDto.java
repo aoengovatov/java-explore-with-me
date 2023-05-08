@@ -19,14 +19,14 @@ public class EventShortDto {
 
     private CategoryDto category;
 
-    private Integer confirmedRequests;
+    private int confirmedRequests;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
     private UserShortDto initiator;
 
-    private Boolean paid;
+    private boolean paid;
 
     private String title;
 

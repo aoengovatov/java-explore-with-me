@@ -43,7 +43,7 @@ public class RequestServiceImpl implements RequestService {
         Request request = new Request();
         request.setEventId(eventId);
         request.setRequesterId(userId);
-        if (!event.getRequestModeration()) {
+        if (!event.isRequestModeration()) {
             request.setState(RequestStatus.CONFIRMED);
         } else {
             request.setState(RequestStatus.PENDING);
@@ -94,7 +94,7 @@ public class RequestServiceImpl implements RequestService {
         List<Request> confirmedRequests = new ArrayList<>();
         List<Request> rejectedRequests = new ArrayList<>();
         checkEventStatusAndLimitRequests(event);
-        if (event.getParticipantLimit() > 0 || !event.getRequestModeration()) {
+        if (event.getParticipantLimit() > 0 || !event.isRequestModeration()) {
             for (Request request : requests) {
                 if (event.getConfirmedRequests() < event.getParticipantLimit()) {
                     switch (dto.getStatus()) {
@@ -149,7 +149,7 @@ public class RequestServiceImpl implements RequestService {
                     "with id=" + event.getId());
         }
         event.setConfirmedRequests(getConfirmedRequestsByEventId(event.getId()));
-        if (event.getParticipantLimit().equals(event.getConfirmedRequests())) {
+        if (event.getParticipantLimit() == event.getConfirmedRequests()) {
             throw new FieldValidationException("The event requests limit has been reached " +
                     "with event id=" + event.getId());
         }

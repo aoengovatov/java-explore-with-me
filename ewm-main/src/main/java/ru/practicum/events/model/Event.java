@@ -50,16 +50,16 @@ public class Event {
     private LocalDateTime publishedOn;
 
     @Column(name = "paid", nullable = false)
-    private Boolean paid;
+    private boolean paid;
 
     @Column(name = "participant_limit", nullable = false)
-    private Integer participantLimit;
+    private int participantLimit;
 
     @Column(name = "confirmed_requests", nullable = false)
-    private Integer confirmedRequests;
+    private int confirmedRequests;
 
     @Column(name = "request_moderation", nullable = false)
-    private Boolean requestModeration;
+    private boolean requestModeration;
 
     @Column(name = "title", nullable = false)
     private String title;

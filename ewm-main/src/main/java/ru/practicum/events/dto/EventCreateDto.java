@@ -10,6 +10,7 @@ import ru.practicum.location.dto.LocationDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -40,8 +41,8 @@ public class EventCreateDto {
     @NotNull
     private Boolean paid;
 
-    @NotNull
-    private Integer participantLimit;
+    @PositiveOrZero
+    private int participantLimit;
 
     @NotNull
     private Boolean requestModeration;

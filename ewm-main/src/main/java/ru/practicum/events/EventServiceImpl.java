@@ -46,6 +46,8 @@ public class EventServiceImpl implements EventService {
     private final LocationService locationService;
     private final StatClient statClient;
 
+    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Autowired
     public EventServiceImpl(@Value("${application.name}") String appName,
                             EventRepository eventRepository,
@@ -292,9 +294,8 @@ public class EventServiceImpl implements EventService {
         List<String> uris = events.stream()
                 .map(e -> String.format("/events/%s", e.getId()))
                 .collect(Collectors.toList());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String start = LocalDateTime.now().minusMonths(3).format(formatter);
-        String end = LocalDateTime.now().plusMonths(3).format(formatter);
+        String start = LocalDateTime.now().minusMonths(3).format(DATETIME_FORMATTER);
+        String end = LocalDateTime.now().format(DATETIME_FORMATTER);
 
         return statClient.getStat(start, end, uris, false);
     }

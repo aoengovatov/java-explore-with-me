@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u " +
-    "where u.id in :ids")
+    "where (:ids is null or u.id in :ids)")
     List<User> getUsers(@Param("ids") List<Long> ids, MyPageRequest myPageRequest);
 
     @Query("select u from User u " +

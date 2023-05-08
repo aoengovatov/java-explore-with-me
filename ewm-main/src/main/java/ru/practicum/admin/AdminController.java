@@ -7,10 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.categories.CategoryService;
 import ru.practicum.categories.dto.CategoryCreateDto;
 import ru.practicum.categories.dto.CategoryDto;
-import ru.practicum.compilations.CompilationService;
-import ru.practicum.compilations.dto.CompilationCreateDto;
-import ru.practicum.compilations.dto.CompilationDto;
-import ru.practicum.compilations.dto.CompilationUpdateDto;
 import ru.practicum.events.EventService;
 import ru.practicum.events.EventStatus;
 import ru.practicum.events.dto.EventDto;
@@ -34,7 +30,6 @@ public class AdminController {
     private final UserService userService;
     private final CategoryService categoryService;
     private final EventService eventService;
-    private final CompilationService compilationService;
 
     @GetMapping("/users")
     public List<UserDto> getUsers(@RequestParam(name = "ids", defaultValue = "ALL") List<Long> ids,
@@ -53,24 +48,6 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long userId) {
         userService.delete(userId);
-    }
-
-    @PostMapping("/compilations")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto addCompilation(@RequestBody @Valid CompilationCreateDto dto) {
-        return compilationService.add(dto);
-    }
-
-    @DeleteMapping("/compilations/{compId}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteCompilation(@PathVariable Long compId) {
-        compilationService.delete(compId);
-    }
-
-    @PatchMapping("/compilations/{compId}")
-    public CompilationDto updateCompilation(@PathVariable Long compId,
-                                            @RequestBody CompilationUpdateDto dto) {
-        return compilationService.update(compId, dto);
     }
 
     @GetMapping("/events")

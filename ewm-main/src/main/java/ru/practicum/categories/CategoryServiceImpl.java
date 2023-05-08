@@ -49,7 +49,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto add(CategoryCreateDto dto) {
-        checkCategoryExists(dto.getName());
         return CategoryMapper.toCategoryDto(categoryRepository.save(CategoryMapper.toCategory(dto)));
     }
 
@@ -63,19 +62,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto update(Long catId, CategoryCreateDto dto) {
-        checkCategoryExists(dto.getName());
-        Category categoryUpdate = CategoryMapper.dtoToCategory(getById(catId));
+        Category categoryUpdate = categoryRepository.findById(catId)
+                .orElseThrow(() -> new EntityNotFoundException(Category.class, catId));
         if (dto.getName() != null) {
             categoryUpdate.setName(dto.getName());
         }
         return CategoryMapper.toCategoryDto(categoryUpdate);
-    }
-
-    private void checkCategoryExists(String name) {
-        Category category = categoryRepository.getByName(name);
-        if (category != null) {
-            throw new FieldValidationException("Category with name=" + name + " already exists.");
-        }
     }
 
     private void checkCategoryUsed(Long catId) {

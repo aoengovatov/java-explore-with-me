@@ -1,9 +1,11 @@
-package ru.practicum.events;
+package ru.practicum.events.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.events.EventService;
+import ru.practicum.events.EventSort;
 import ru.practicum.events.dto.EventDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,7 @@ import java.util.List;
 @RequestMapping("/events")
 @RequiredArgsConstructor
 @Validated
-public class EventController {
+public class EventPublicController {
 
     @Autowired
     private final EventService eventService;

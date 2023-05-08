@@ -1,9 +1,10 @@
-package ru.practicum.categories;
+package ru.practicum.categories.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.categories.CategoryService;
 import ru.practicum.categories.dto.CategoryDto;
 
 import javax.validation.constraints.Positive;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequestMapping("/categories")
 @RequiredArgsConstructor
 @Validated
-public class CategoryController {
+public class CategoryPublicController {
 
     @Autowired
     private final CategoryService categoryService;

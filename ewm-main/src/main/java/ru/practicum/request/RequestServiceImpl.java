@@ -149,7 +149,7 @@ public class RequestServiceImpl implements RequestService {
                     "with id=" + event.getId());
         }
         event.setConfirmedRequests(getConfirmedRequestsByEventId(event.getId()));
-        if (event.getParticipantLimit() == event.getConfirmedRequests()) {
+        if (event.getParticipantLimit() != 0 && event.getParticipantLimit() == event.getConfirmedRequests()) {
             throw new FieldValidationException("The event requests limit has been reached " +
                     "with event id=" + event.getId());
         }

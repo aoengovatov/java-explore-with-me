@@ -10,6 +10,7 @@ import ru.practicum.location.dto.LocationDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 public class EventCreateDto {
 
     @NotBlank
+    @Size(max = 1000)
     private String annotation;
 
     @NotNull
@@ -28,6 +30,7 @@ public class EventCreateDto {
     private LocationDto location;
 
     @NotBlank
+    @Size(max = 1000)
     private String description;
 
     @NotNull
@@ -44,6 +47,7 @@ public class EventCreateDto {
     private Boolean requestModeration;
 
     @NotBlank
+    @Size(max = 255)
     private String title;
 
     private EventStateAction state;

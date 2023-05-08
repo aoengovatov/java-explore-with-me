@@ -30,8 +30,10 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     public CompilationDto add(CompilationCreateDto dto) {
         Compilation compilation = compilationRepository.save(CompilationMapper.createDtoToCompilation(dto));
-        List<Event> events = eventRepository.findAllById(dto.getEvents());
-        compilation.getEvents().addAll(events);
+        if (!dto.getEvents().isEmpty()) {
+            List<Event> events = eventRepository.findAllById(dto.getEvents());
+            compilation.getEvents().addAll(events);
+        }
         return CompilationMapper.toCompilationDto(compilation);
     }
 

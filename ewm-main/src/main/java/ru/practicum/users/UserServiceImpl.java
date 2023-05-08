@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.common.MyPageRequest;
 import ru.practicum.exception.EntityNotFoundException;
-import ru.practicum.exception.FieldValidationException;
 import ru.practicum.users.dto.UserCreateDto;
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.model.User;
@@ -37,8 +36,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto add(UserCreateDto dto) {
-        checkUserNameExists(dto.getName());
-        return UserMapper.userToUserDto(userRepository.save(UserMapper.createDtoToUser(dto)));
+        User user = userRepository.save(UserMapper.createDtoToUser(dto));
+        return UserMapper.userToUserDto(user);
     }
 
     @Override
@@ -53,12 +52,5 @@ public class UserServiceImpl implements UserService {
     public UserDto getById(Long userId) {
         return UserMapper.userToUserDto(userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(User.class, userId)));
-    }
-
-    private void checkUserNameExists(String name) {
-        User user = userRepository.getUserByName(name);
-        if (user != null) {
-            throw new FieldValidationException("User with name=" + name + " already exists.");
-        }
     }
 }

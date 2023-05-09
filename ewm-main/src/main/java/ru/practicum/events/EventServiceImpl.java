@@ -26,6 +26,9 @@ import ru.practicum.location.LocationService;
 import ru.practicum.location.dto.LocationCreateDto;
 import ru.practicum.location.dto.LocationDto;
 import ru.practicum.location.model.Location;
+import ru.practicum.request.RequestRepository;
+import ru.practicum.request.RequestStatus;
+import ru.practicum.request.dto.ConfirmedRequestDto;
 import ru.practicum.users.UserService;
 import ru.practicum.users.dto.UserDto;
 
@@ -34,6 +37,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -45,6 +50,7 @@ public class EventServiceImpl implements EventService {
     private final CategoryService categoryService;
     private final LocationService locationService;
     private final StatClient statClient;
+    private final RequestRepository requestRepository;
 
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -54,13 +60,14 @@ public class EventServiceImpl implements EventService {
                             UserService userService,
                             CategoryService categoryService,
                             LocationService locationService,
-                            StatClient statClient) {
+                            StatClient statClient, RequestRepository requestRepository) {
         this.eventRepository = eventRepository;
         this.userService = userService;
         this.categoryService = categoryService;
         this.locationService = locationService;
         this.statClient = statClient;
         this.appName = appName;
+        this.requestRepository = requestRepository;
     }
 
     @Override
@@ -75,10 +82,10 @@ public class EventServiceImpl implements EventService {
         Event event = EventMapper.createDtoToEvent(user, category, location, dto);
         event.setState(EventStatus.PENDING);
         event.setCreatedOn(LocalDateTime.now());
-        event.setConfirmedRequests(0);
         eventRepository.save(event);
         EventDto eventDto = EventMapper.eventToEventDto(event);
         eventDto.setViews(0);
+        eventDto.setConfirmedRequests(0);
         return eventDto;
     }
 
@@ -91,8 +98,7 @@ public class EventServiceImpl implements EventService {
         userService.getById(userId);
         updateEventFields(event, dto);
         EventDto eventDto = EventMapper.eventToEventDto(event);
-        Map<String,Long> views = getViewsByEvents(List.of(event));
-        setViewsByEventsDto(List.of(eventDto), views);
+        setViewsByEventsDto(List.of(eventDto));
         return eventDto;
     }
 
@@ -103,8 +109,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new EntityNotFoundException(Event.class, eventId));
         updateEventFields(event, dto);
         EventDto eventDto = EventMapper.eventToEventDto(event);
-        Map<String,Long> views = getViewsByEvents(List.of(event));
-        setViewsByEventsDto(List.of(eventDto), views);
+        setViewsByEventsDto(List.of(eventDto));
         return eventDto;
     }
 
@@ -116,16 +121,25 @@ public class EventServiceImpl implements EventService {
         String ip = request.getRemoteAddr();
         String url = request.getRequestURI();
         addHit(ip, url);
+        Sort sortEvents = Sort.unsorted();
+        if (sort != null && sort.equals(EventSort.EVENT_DATE)) {
+            sortEvents = Sort.by(Sort.Direction.DESC, "eventDate");
+        }
         List<Event> events = eventRepository.getPublishedEvents(text, categories, paid, rangeStart, rangeEnd,
-                new MyPageRequest(from, size, Sort.unsorted()));
-        Map<String,Long> views = getViewsByEvents(events);
-        List<EventDto> eventDtos = events.stream()
-                .map(EventMapper::eventToEventDto)
-                .collect(Collectors.toList());
-        setViewsByEventsDto(eventDtos, views);
+                new MyPageRequest(from, size, sortEvents));
+        List<EventDto> eventDtos = addViewsAndConfirmedRequests(events);
+        if (sort != null && sort.equals(EventSort.VIEWS)) {
+            eventDtos = eventDtos.stream()
+                    .sorted(Comparator.comparing(EventDto::getViews).reversed())
+                    .collect(Collectors.toList());
+        }
+        if (onlyAvailable) {
+            eventDtos = eventDtos.stream()
+                    .filter(e -> e.getConfirmedRequests() < e.getParticipantLimit())
+                    .collect(toList());
+        }
         return eventDtos;
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -135,10 +149,8 @@ public class EventServiceImpl implements EventService {
         String ip = request.getRemoteAddr();
         String url = request.getRequestURI();
         addHit(ip, url);
-        EventDto eventDto = EventMapper.eventToEventDto(event);
-        Map<String,Long> views = getViewsByEvents(List.of(event));
-        setViewsByEventsDto(List.of(eventDto), views);
-        return eventDto;
+
+        return addViewsAndConfirmedRequests(List.of(event)).get(0);
     }
 
     @Override
@@ -157,7 +169,7 @@ public class EventServiceImpl implements EventService {
         }
         return events.stream()
                 .map(EventMapper::eventToEventDto)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override
@@ -170,9 +182,7 @@ public class EventServiceImpl implements EventService {
         if (events.isEmpty()) {
             return Collections.emptyList();
         }
-        return events.stream()
-                .map(EventMapper::eventToEventDto)
-                .collect(Collectors.toList());
+        return addViewsAndConfirmedRequests(events);
     }
 
     private void checkDate(LocalDateTime eventDate) {
@@ -268,16 +278,21 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private Map<String, Long> getViewsByEvents(List<Event> events) {
-        List<ViewStatDto> eventViews = getEventsViewList(events);
-        Map<String, Long> views =  new HashMap<>();
-        for (ViewStatDto eventView : eventViews) {
-            views.put(eventView.getUri(), eventView.getHits());
+    private List<EventDto> addViewsAndConfirmedRequests(List<Event> events) {
+        List<EventDto> eventsDto = events.stream()
+                .map(EventMapper::eventToEventDto)
+                .collect(toList());
+        if (!eventsDto.isEmpty()) {
+            setViewsByEventsDto(eventsDto);
+            setConfirmedRequestsByEventsDto(eventsDto);
+        } else {
+            return Collections.emptyList();
         }
-        return views;
+        return eventsDto;
     }
 
-    private void setViewsByEventsDto(List<EventDto> dto, Map<String, Long> views) {
+    private void setViewsByEventsDto(List<EventDto> dto) {
+        Map<String,Long> views = getEventsViews(dto);
         if (!views.isEmpty()) {
             for (EventDto event : dto) {
                 Long hits = views.get(String.format("/events/%s", event.getId()));
@@ -290,18 +305,44 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private List<ViewStatDto> getEventsViewList(List<Event> events) {
+    private  Map<String,Long> getEventsViews(List<EventDto> events) {
         List<String> uris = events.stream()
                 .map(e -> String.format("/events/%s", e.getId()))
-                .collect(Collectors.toList());
+                .collect(toList());
         String start = LocalDateTime.now().minusMonths(3).format(DATETIME_FORMATTER);
         String end = LocalDateTime.now().format(DATETIME_FORMATTER);
-
-        return statClient.getStat(start, end, uris, false);
+        List<ViewStatDto> eventViews = statClient.getStat(start, end, uris, false);
+        Map<String, Long> views = new HashMap<>();
+        if (!eventViews.isEmpty()) {
+            for (ViewStatDto eventView : eventViews) {
+                views.put(eventView.getUri(), eventView.getHits());
+            }
+        }
+        return views;
     }
 
     private void addHit(String ip, String url) {
         log.info("ADD HIT ip: {}, url: {}", ip, url);
         statClient.addHit(new CreateHitDto(appName, url, ip, LocalDateTime.now()));
+    }
+
+    private void setConfirmedRequestsByEventsDto(List<EventDto> dto) {
+        List<Long> ids = dto.stream()
+                .map(d -> d.getId())
+                .collect(toList());
+        List<ConfirmedRequestDto> confirmedRequests = requestRepository.getRequestsByEventIdsAndStatus(ids,
+                RequestStatus.CONFIRMED);
+        Map<Long, Long> eventsConfirmedRequests = new HashMap<>();
+        if (!confirmedRequests.isEmpty()) {
+            for (ConfirmedRequestDto request : confirmedRequests) {
+                eventsConfirmedRequests.put(request.getEventId(), request.getConfirmedRequest());
+            }
+        }
+        if (!eventsConfirmedRequests.isEmpty()) {
+            for (EventDto event : dto) {
+                int confirmRequests = eventsConfirmedRequests.get(event.getId()).intValue();
+                event.setConfirmedRequests(confirmRequests);
+            }
+        }
     }
 }

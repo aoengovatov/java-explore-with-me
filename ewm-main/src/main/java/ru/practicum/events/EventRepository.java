@@ -60,6 +60,4 @@ public interface EventRepository extends JpaRepository<Event, Long>  {
     @Query("select e from Event e " +
     "where e.category.id = :catId")
     List<Event> getAllWithCategoryId(@Param("catId") Long catId);
-
-    Event findEventByOrderByCreatedOnAsc(MyPageRequest myPageRequest);
 }

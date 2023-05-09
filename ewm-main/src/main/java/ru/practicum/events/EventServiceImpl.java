@@ -309,9 +309,7 @@ public class EventServiceImpl implements EventService {
         List<String> uris = events.stream()
                 .map(e -> String.format("/events/%s", e.getId()))
                 .collect(toList());
-        Event firstCreatedEvent = eventRepository.findEventByOrderByCreatedOnAsc(
-                new MyPageRequest(0,1,Sort.unsorted()));
-        String start = firstCreatedEvent.getCreatedOn().format(DATETIME_FORMATTER);
+        String start = LocalDateTime.now().minusMonths(3).format(DATETIME_FORMATTER);
         String end = LocalDateTime.now().format(DATETIME_FORMATTER);
         List<ViewStatDto> eventViews = statClient.getStat(start, end, uris, false);
         Map<String, Long> views = new HashMap<>();

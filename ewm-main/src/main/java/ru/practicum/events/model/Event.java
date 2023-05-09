@@ -55,9 +55,6 @@ public class Event {
     @Column(name = "participant_limit", nullable = false)
     private int participantLimit;
 
-    @Column(name = "confirmed_requests", nullable = false)
-    private int confirmedRequests;
-
     @Column(name = "request_moderation", nullable = false)
     private boolean requestModeration;
 

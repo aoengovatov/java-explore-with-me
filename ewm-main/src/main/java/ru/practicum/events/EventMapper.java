@@ -39,7 +39,6 @@ public class EventMapper {
         dto.setId(event.getId());
         dto.setAnnotation(event.getAnnotation());
         dto.setCategory(category);
-        dto.setConfirmedRequests(event.getConfirmedRequests());
         dto.setCreatedOn(event.getCreatedOn());
         dto.setDescription(event.getDescription());
         dto.setEventDate(event.getEventDate());
@@ -72,7 +71,6 @@ public class EventMapper {
         dto.setId(event.getId());
         dto.setAnnotation(event.getAnnotation());
         dto.setCategory(category);
-        dto.setConfirmedRequests(event.getConfirmedRequests());
         dto.setEventDate(event.getEventDate());
         dto.setInitiator(user);
         dto.setPaid(event.isPaid());

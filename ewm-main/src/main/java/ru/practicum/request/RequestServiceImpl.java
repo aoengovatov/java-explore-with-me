@@ -38,7 +38,8 @@ public class RequestServiceImpl implements RequestService {
         userService.getById(userId);
         checkDoubleRequest(eventId, userId);
         Event event = eventRepository.findById(eventId).get();
-        checkEventStatusAndLimitRequests(event);
+        Integer confirmedEventRequests = requestRepository.getConfirmedRequestsByEventId(eventId);
+        checkEventStatusAndLimitRequests(event, confirmedEventRequests);
         checkRequestFromInitiator(event, userId);
         Request request = new Request();
         request.setEventId(eventId);
@@ -93,16 +94,17 @@ public class RequestServiceImpl implements RequestService {
         List<Request> requests = requestRepository.findAllById(dto.getRequestIds());
         List<Request> confirmedRequests = new ArrayList<>();
         List<Request> rejectedRequests = new ArrayList<>();
-        checkEventStatusAndLimitRequests(event);
+        Integer confirmedEventRequests = requestRepository.getConfirmedRequestsByEventId(eventId);
+        checkEventStatusAndLimitRequests(event, confirmedEventRequests);
         if (event.getParticipantLimit() > 0 || !event.isRequestModeration()) {
             for (Request request : requests) {
-                if (event.getConfirmedRequests() < event.getParticipantLimit()) {
+                if (confirmedEventRequests < event.getParticipantLimit()) {
                     switch (dto.getStatus()) {
                         case CONFIRMED:
                             if (request.getState().equals(RequestStatus.PENDING)) {
                                 request.setState(dto.getStatus());
-                                event.setConfirmedRequests(event.getConfirmedRequests() + 1);
                                 confirmedRequests.add(request);
+                                confirmedEventRequests++;
                             }
                             break;
                         case REJECTED:
@@ -124,10 +126,6 @@ public class RequestServiceImpl implements RequestService {
                 rejectedRequests.stream().map(RequestMapper::requestToRequestDto).collect(Collectors.toList()));
     }
 
-    private Integer getConfirmedRequestsByEventId(Long eventId) {
-        return requestRepository.confirmedRequestsByEventId(eventId);
-    }
-
     private void checkDoubleRequest(Long eventId, Long userId) {
         Optional<Request> request = requestRepository.findByEventIdAndRequesterId(eventId, userId);
         if (request.isPresent()) {
@@ -143,13 +141,12 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
-    private void checkEventStatusAndLimitRequests(Event event) {
+    private void checkEventStatusAndLimitRequests(Event event, Integer confirmedEventRequests) {
         if (event.getState() != EventStatus.PUBLISHED) {
             throw new FieldValidationException("Error. Requests for non published event " +
                     "with id=" + event.getId());
         }
-        event.setConfirmedRequests(getConfirmedRequestsByEventId(event.getId()));
-        if (event.getParticipantLimit() != 0 && event.getParticipantLimit() == event.getConfirmedRequests()) {
+        if (event.getParticipantLimit() != 0 && event.getParticipantLimit() == confirmedEventRequests) {
             throw new FieldValidationException("The event requests limit has been reached " +
                     "with event id=" + event.getId());
         }

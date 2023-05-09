@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS events
     location_id BIGINT NOT NULL,
     paid BOOLEAN NOT NULL DEFAULT false,
     participant_limit INT NOT NULL DEFAULT 0,
-    confirmed_requests INT NOT NULL DEFAULT 0,
     request_moderation BOOLEAN NOT NULL DEFAULT false,
     state VARCHAR(255) NOT NULL,
     CONSTRAINT pk_events PRIMARY KEY (id),

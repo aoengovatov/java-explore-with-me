@@ -1,7 +1,6 @@
 package ru.practicum.events;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -54,7 +53,6 @@ public class EventServiceImpl implements EventService {
 
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    @Autowired
     public EventServiceImpl(@Value("${application.name}") String appName,
                             EventRepository eventRepository,
                             UserService userService,
@@ -314,13 +312,8 @@ public class EventServiceImpl implements EventService {
         String start = firstCreatedEvent.getCreatedOn().format(DATETIME_FORMATTER);
         String end = LocalDateTime.now().format(DATETIME_FORMATTER);
         List<ViewStatDto> eventViews = statClient.getStat(start, end, uris, false);
-        Map<String, Long> views = new HashMap<>();
-        if (!eventViews.isEmpty()) {
-            for (ViewStatDto eventView : eventViews) {
-                views.put(eventView.getUri(), eventView.getHits());
-            }
-        }
-        return views;
+        return eventViews.stream()
+                .collect(Collectors.toMap(ViewStatDto::getUri, ViewStatDto::getHits));
     }
 
     private void addHit(String ip, String url) {
@@ -330,20 +323,22 @@ public class EventServiceImpl implements EventService {
 
     private void setConfirmedRequestsByEventsDto(List<EventDto> dto) {
         List<Long> ids = dto.stream()
-                .map(d -> d.getId())
+                .map(EventDto::getId)
                 .collect(toList());
         List<ConfirmedRequestDto> confirmedRequests = requestRepository.getRequestsByEventIdsAndStatus(ids,
                 RequestStatus.CONFIRMED);
-        Map<Long, Long> eventsConfirmedRequests = new HashMap<>();
         if (!confirmedRequests.isEmpty()) {
-            for (ConfirmedRequestDto request : confirmedRequests) {
-                eventsConfirmedRequests.put(request.getEventId(), request.getConfirmedRequest());
-            }
-        }
-        if (!eventsConfirmedRequests.isEmpty()) {
+            Map<Long, Long> eventsConfirmedRequests = confirmedRequests.stream()
+                    .collect(Collectors.toMap(ConfirmedRequestDto::getEventId,
+                            ConfirmedRequestDto::getConfirmedRequest));
             for (EventDto event : dto) {
-                int confirmRequests = eventsConfirmedRequests.get(event.getId()).intValue();
-                event.setConfirmedRequests(confirmRequests);
+                Integer confirmRequests = eventsConfirmedRequests.get(event.getId()).intValue();
+                if (confirmRequests != null) {
+                    event.setConfirmedRequests(confirmRequests);
+                } else {
+                    event.setConfirmedRequests(0);
+                }
+
             }
         }
     }

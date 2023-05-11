@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CompilationUpdateDto {
 
-    private boolean pinned;
+    private Boolean pinned;
 
     @Size(max = 255)
     private String title;

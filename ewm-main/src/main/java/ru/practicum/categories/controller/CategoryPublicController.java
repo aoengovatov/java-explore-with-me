@@ -1,7 +1,6 @@
 package ru.practicum.categories.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.categories.CategoryService;
@@ -17,7 +16,6 @@ import java.util.List;
 @Validated
 public class CategoryPublicController {
 
-    @Autowired
     private final CategoryService categoryService;
 
     @GetMapping

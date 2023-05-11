@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS events
     location_id BIGINT NOT NULL,
     paid BOOLEAN NOT NULL DEFAULT false,
     participant_limit INT NOT NULL DEFAULT 0,
-    request_moderation BOOLEAN NOT NULL DEFAULT false,
+    request_moderation BOOLEAN NOT NULL DEFAULT true,
     state VARCHAR(255) NOT NULL,
     CONSTRAINT pk_events PRIMARY KEY (id),
     CONSTRAINT fk_event_category FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE,

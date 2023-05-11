@@ -1,14 +1,13 @@
 package ru.practicum.events.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.EventService;
 import ru.practicum.events.EventStatus;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventUpdateDto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
@@ -17,10 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/events")
 @RequiredArgsConstructor
-@Validated
 public class EventAdminController {
 
-    @Autowired
     private final EventService eventService;
 
     @GetMapping
@@ -36,7 +33,7 @@ public class EventAdminController {
 
     @PatchMapping("/{eventId}")
     public EventDto updateEventById(@PathVariable Long eventId,
-                                    @RequestBody EventUpdateDto dto) {
+                                    @RequestBody @Valid EventUpdateDto dto) {
         return eventService.updateFromAdmin(eventId, dto);
     }
 }

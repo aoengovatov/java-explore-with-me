@@ -1,9 +1,9 @@
 package ru.practicum.compilations;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.common.MyPageRequest;
 import ru.practicum.compilations.dto.CompilationCreateDto;
 import ru.practicum.compilations.dto.CompilationDto;
@@ -13,7 +13,6 @@ import ru.practicum.events.EventRepository;
 import ru.practicum.events.model.Event;
 import ru.practicum.exception.EntityNotFoundException;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 
@@ -23,7 +22,6 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
 
-    @Autowired
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
 
@@ -39,6 +37,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
+    @Transactional
     public void delete(Long compId) {
         compilationRepository.deleteById(compId);
     }
@@ -48,7 +47,9 @@ public class CompilationServiceImpl implements CompilationService {
     public CompilationDto update(Long compId, CompilationUpdateDto dto) {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException(Compilation.class, compId));
-        compilation.setPinned(dto.isPinned());
+        if (checkNull(dto.getPinned())) {
+            compilation.setPinned(dto.getPinned());
+        }
         if (checkNullOrBlank(dto.getTitle())) {
             compilation.setTitle(dto.getTitle());
         }
@@ -60,6 +61,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CompilationDto getById(Long compId) {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new EntityNotFoundException(Compilation.class, compId));
@@ -67,6 +69,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CompilationDto> getWithFilter(Boolean pinned, Integer from, Integer size) {
         List<Compilation> compilations;
         if (checkNull(pinned)) {

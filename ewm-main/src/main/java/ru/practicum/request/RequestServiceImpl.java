@@ -2,6 +2,7 @@ package ru.practicum.request;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.events.EventRepository;
 import ru.practicum.events.EventService;
 import ru.practicum.events.EventStatus;
@@ -14,7 +15,6 @@ import ru.practicum.request.dto.RequestUpdateStatusResultDto;
 import ru.practicum.request.model.Request;
 import ru.practicum.users.UserService;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +54,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RequestDto> getRequestsInfoByUser(Long userId) {
         userService.getById(userId);
         List<Request> requests = requestRepository.findAllByRequester(userId);
@@ -66,6 +67,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RequestDto> getRequestsByUserEvent(Long userId, Long eventId) {
         userService.getById(userId);
         eventService.getEventInfoByUser(eventId, userId);
@@ -102,6 +104,10 @@ public class RequestServiceImpl implements RequestService {
                     switch (dto.getStatus()) {
                         case CONFIRMED:
                             if (request.getState().equals(RequestStatus.PENDING)) {
+                                if (event.getParticipantLimit() == 0) {
+                                    throw new FieldValidationException("The event requests limit has been reached " +
+                                            "with event id=" + event.getId());
+                                }
                                 request.setState(dto.getStatus());
                                 confirmedRequests.add(request);
                                 confirmedEventRequests++;

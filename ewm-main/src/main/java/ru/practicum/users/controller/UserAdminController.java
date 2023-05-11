@@ -1,7 +1,6 @@
 package ru.practicum.users.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +19,10 @@ import java.util.List;
 @Validated
 public class UserAdminController {
 
-    @Autowired
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> getUsers(@RequestParam(name = "ids", defaultValue = "ALL") List<Long> ids,
+    public List<UserDto> getUsers(@RequestParam(name = "ids", required = false) List<Long> ids,
                                   @PositiveOrZero @RequestParam (name = "from", defaultValue = "0") Integer from,
                                   @Positive @RequestParam (name = "size", defaultValue = "10") Integer size) {
         return userService.getUsers(ids, from, size);

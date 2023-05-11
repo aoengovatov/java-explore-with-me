@@ -1,7 +1,6 @@
 package ru.practicum.events.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,6 @@ import java.util.List;
 @Validated
 public class EventPrivateController {
 
-    @Autowired
     private final EventService eventService;
     private final RequestService requestService;
 
@@ -48,7 +46,7 @@ public class EventPrivateController {
     @PatchMapping("/{userId}/events/{eventId}")
     public EventDto updateEvent(@PathVariable Long userId,
                                 @PathVariable Long eventId,
-                                @RequestBody EventUpdateDto dto) {
+                                @RequestBody @Valid EventUpdateDto dto) {
         return eventService.updateFromUser(userId, eventId,dto);
     }
 

@@ -1,7 +1,6 @@
 package ru.practicum.events.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.EventService;
@@ -20,7 +19,6 @@ import java.util.List;
 @Validated
 public class EventPublicController {
 
-    @Autowired
     private final EventService eventService;
 
     @GetMapping()
@@ -29,8 +27,8 @@ public class EventPublicController {
                                     @RequestParam(value = "paid", required = false) Boolean paid,
                                     @RequestParam(value = "rangeStart", required = false) LocalDateTime rangeStart,
                                     @RequestParam(value = "rangeEnd", required = false) LocalDateTime rangeEnd,
-                                    @RequestParam(value = "onlyAvailable", required = false,
-                                    defaultValue = "false") Boolean onlyAvailable,
+                                    @RequestParam(value = "onlyAvailable",
+                                            defaultValue = "false") Boolean onlyAvailable,
                                     @RequestParam(value = "sort", required = false) EventSort sort,
                                     @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") Integer from,
                                     @Positive @RequestParam (name = "size", defaultValue = "10") Integer size,

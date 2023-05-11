@@ -42,14 +42,12 @@ public class EventCreateDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
-    @NotNull
-    private Boolean paid;
+    private boolean paid;
 
     @PositiveOrZero
     private int participantLimit;
 
-    @NotNull
-    private Boolean requestModeration;
+    private boolean requestModeration;
 
     @NotBlank
     @Size(max = 255)

@@ -1,7 +1,6 @@
 package ru.practicum.categories;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
     private final CategoryRepository categoryRepository;
     private final EventRepository eventRepository;
 
@@ -64,9 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto update(Long catId, CategoryCreateDto dto) {
         Category categoryUpdate = categoryRepository.findById(catId)
                 .orElseThrow(() -> new EntityNotFoundException(Category.class, catId));
-        if (dto.getName() != null) {
-            categoryUpdate.setName(dto.getName());
-        }
+        categoryUpdate.setName(dto.getName());
         return CategoryMapper.toCategoryDto(categoryUpdate);
     }
 

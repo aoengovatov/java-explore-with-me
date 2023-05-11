@@ -101,9 +101,9 @@ public class EventMapper {
         event.setInitiator(user);
         event.setDescription(eventCreateDto.getDescription());
         event.setEventDate(eventCreateDto.getEventDate());
-        event.setPaid(eventCreateDto.getPaid());
+        event.setPaid(eventCreateDto.isPaid());
         event.setParticipantLimit(eventCreateDto.getParticipantLimit());
-        event.setRequestModeration(eventCreateDto.getRequestModeration());
+        event.setRequestModeration(eventCreateDto.isRequestModeration());
         event.setTitle(eventCreateDto.getTitle());
         return event;
     }

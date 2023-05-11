@@ -1,7 +1,6 @@
 package ru.practicum.compilations.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.compilations.CompilationService;
@@ -17,8 +16,7 @@ import java.util.List;
 @Validated
 public class CompilationPublicController {
 
-    @Autowired
-    private CompilationService compilationService;
+    private final CompilationService compilationService;
 
     @GetMapping
     public List<CompilationDto> getWithFilter(@RequestParam(value = "pinned", required = false) Boolean pinned,

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
-import ru.practicum.events.EventStateAction;
 import ru.practicum.location.dto.LocationDto;
 
 import javax.validation.Valid;
@@ -53,5 +52,5 @@ public class EventCreateDto {
     @Size(max = 255)
     private String title;
 
-    private EventStateAction state;
+    //private EventStateAction state;
 }

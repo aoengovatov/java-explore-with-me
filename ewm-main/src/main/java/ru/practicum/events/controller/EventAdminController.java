@@ -3,6 +3,7 @@ package ru.practicum.events.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.EventService;
+import ru.practicum.events.EventStateAction;
 import ru.practicum.events.EventStatus;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventUpdateDto;
@@ -29,6 +30,18 @@ public class EventAdminController {
                                        @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") Integer from,
                                        @Positive @RequestParam (name = "size", defaultValue = "10") Integer size) {
         return eventService.getEventsWithFilters(userIds, states, categories, rangeStart, rangeEnd, from, size);
+    }
+
+    @GetMapping("/moderation")
+    public List<EventDto> getByModeration() {
+        return eventService.getByModeration();
+    }
+
+    @PostMapping("/{eventId}/moderation")
+    public EventDto addModerationResolve(@PathVariable Long eventId,
+                                                   @RequestParam(value = "state") EventStateAction state,
+                                                   @RequestParam(value = "comment", required = false) String comment) {
+        return eventService.addModerationResolve(eventId, state, comment);
     }
 
     @PatchMapping("/{eventId}")

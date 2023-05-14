@@ -49,6 +49,9 @@ public class Event {
     @Column(name = "published_on", nullable = false)
     private LocalDateTime publishedOn;
 
+    @Column(name = "last_update", nullable = false)
+    private LocalDateTime lastUpdate;
+
     @Column(name = "paid", nullable = false)
     private boolean paid;
 

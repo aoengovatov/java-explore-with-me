@@ -29,4 +29,8 @@ public interface EventService {
     List<EventDto> getEventsWithFilters(List<Long> userIds, List<EventStatus> states, List<Long> categories,
                                         LocalDateTime rangeStart, LocalDateTime rangeEnd,
                                         Integer from, Integer size);
+
+    List<EventDto> getByModeration();
+
+    EventDto addModerationResolve(Long eventId, EventStateAction state, String comment);
 }

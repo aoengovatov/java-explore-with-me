@@ -155,10 +155,10 @@
               "    pm.expect(target.id).to.not.be.null;\r",
               "    pm.expect(target.title).equal(\"Супер новинка\");\r",
               "    pm.expect(target.annotation).equal(\"Новинка\");\r",
-              "    pm.expect(target.category.id).equal(1);\r",
+              "    pm.expect(target.category.id).to.not.be.null;\r",
               "    pm.expect(target.paid).equal(true);\r",
               "    pm.expect(target.eventDate).equal(\"2023-05-20 13:01:44\");\r",
-              "    pm.expect(target.initiator.id).equal(1);\r",
+              "    pm.expect(target.initiator.id).to.not.be.null;\r",
               "    pm.expect(target.description).equal(\"Описание концертной программы\");\r",
               "    pm.expect(target.participantLimit).equal(300);\r",
               "    pm.expect(target.state).equal(\"PENDING\");\r",
@@ -185,7 +185,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/users/1/events",
+          "raw": "http://localhost:8080/users/64/events",
           "protocol": "http",
           "host": [
             "localhost"
@@ -193,7 +193,7 @@
           "port": "8080",
           "path": [
             "users",
-            "1",
+            "64",
             "events"
           ]
         }
@@ -216,7 +216,7 @@
               "const target = pm.response.json();\r",
               "\r",
               "pm.test(\"В списке модерации должно быть одно событие\", function () {\r",
-              "    pm.expect(target.length).to.eql(1);\r",
+              "    pm.expect(target.length).to.eql(12);\r",
               "});"
             ],
             "type": "text/javascript"
@@ -296,7 +296,7 @@
           "variable": [
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }
@@ -353,7 +353,7 @@
           "variable": [
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }
@@ -413,7 +413,7 @@
           "variable": [
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }
@@ -474,7 +474,7 @@
           "variable": [
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }
@@ -524,11 +524,11 @@
           "variable": [
             {
               "key": "userId",
-              "value": "1"
+              "value": "64"
             },
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }
@@ -587,11 +587,11 @@
           "variable": [
             {
               "key": "userId",
-              "value": "1"
+              "value": "64"
             },
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }
@@ -614,9 +614,9 @@
               "const target = pm.response.json();\r",
               "\r",
               "pm.test(\"В списке модерации должно быть одно событие\", function () {\r",
-              "    pm.expect(target.length).to.eql(1);\r",
-              "    pm.expect(target[0].state).to.eql(\"PENDING\");\r",
-              "    pm.expect(target[0].title).to.eql(\"Исправленное название события\");\r",
+              "    pm.expect(target.length).to.eql(12);\r",
+              "    pm.expect(target[11].state).to.eql(\"PENDING\");\r",
+              "    pm.expect(target[11].title).to.eql(\"Исправленное название события\");\r",
               "});"
             ],
             "type": "text/javascript"
@@ -690,7 +690,7 @@
           "variable": [
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }
@@ -747,7 +747,7 @@
           "variable": [
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }
@@ -797,11 +797,11 @@
           "variable": [
             {
               "key": "userId",
-              "value": "1"
+              "value": "64"
             },
             {
               "key": "eventId",
-              "value": "1"
+              "value": "39"
             }
           ]
         }

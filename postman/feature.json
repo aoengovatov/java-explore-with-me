@@ -7,201 +7,7 @@
   },
   "item": [
     {
-      "name": "Добавляем новую категорию",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-              "    pm.response.to.have.status(201);   \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Категория должно содержать поля id, name\", function () {\r",
-              "    pm.expect(target).to.have.property('id');\r",
-              "    pm.expect(target).to.have.property('name');\r",
-              "})\r",
-              "\r",
-              "pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-              "    pm.expect(target.id).to.not.be.null;\r",
-              "    pm.expect(target.name).equal(\"Концерты\");\r",
-              "})"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"name\": \"Концерты\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/admin/categories",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "admin",
-            "categories"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Добавляем нового пользователя",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-              "    pm.response.to.have.status(201);   \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Категория должно содержать поля id, name, email\", function () {\r",
-              "    pm.expect(target).to.have.property('id');\r",
-              "    pm.expect(target).to.have.property('name');\r",
-              "    pm.expect(target).to.have.property('email');\r",
-              "})\r",
-              "\r",
-              "pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-              "    pm.expect(target.id).to.not.be.null;\r",
-              "    pm.expect(target.name).equal(\"User1\");\r",
-              "    pm.expect(target.email).equal(\"user1@email.ru\");\r",
-              "})"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"name\": \"User1\",\r\n    \"email\": \"user1@email.ru\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/admin/users",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "admin",
-            "users"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Добавляем новое событие",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-              "    pm.response.to.have.status(201);  \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
-              "pm.expect(target).to.have.property('id');\r",
-              "pm.expect(target).to.have.property('title');\r",
-              "pm.expect(target).to.have.property('annotation');\r",
-              "pm.expect(target).to.have.property('category');\r",
-              "pm.expect(target).to.have.property('paid');\r",
-              "pm.expect(target).to.have.property('eventDate');\r",
-              "pm.expect(target).to.have.property('initiator');\r",
-              "pm.expect(target).to.have.property('description');\r",
-              "pm.expect(target).to.have.property('participantLimit');\r",
-              "pm.expect(target).to.have.property('state');\r",
-              "pm.expect(target).to.have.property('createdOn');\r",
-              "pm.expect(target).to.have.property('location');\r",
-              "pm.expect(target).to.have.property('requestModeration');\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-              "    pm.expect(target.id).to.not.be.null;\r",
-              "    pm.expect(target.title).equal(\"Супер новинка\");\r",
-              "    pm.expect(target.annotation).equal(\"Новинка\");\r",
-              "    pm.expect(target.category.id).to.not.be.null;\r",
-              "    pm.expect(target.paid).equal(true);\r",
-              "    pm.expect(target.eventDate).equal(\"2023-05-20 13:01:44\");\r",
-              "    pm.expect(target.initiator.id).to.not.be.null;\r",
-              "    pm.expect(target.description).equal(\"Описание концертной программы\");\r",
-              "    pm.expect(target.participantLimit).equal(300);\r",
-              "    pm.expect(target.state).equal(\"PENDING\");\r",
-              "    pm.expect(target.createdOn).to.not.be.null;\r",
-              "    pm.expect(target.location.lat).equal(32.2878);\r",
-              "    pm.expect(target.location.lon).equal(-105.9982);\r",
-              "    pm.expect(target.requestModeration).equal(false);\r",
-              "});    "
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"annotation\": \"Новинка\",\r\n    \"category\": 1,\r\n    \"location\": {\r\n        \"lat\": 32.2878,\r\n        \"lon\": -105.9982\r\n    },\r\n    \"description\": \"Описание концертной программы\",\r\n    \"eventDate\": \"2023-05-20 13:01:44\",\r\n    \"paid\": true,\r\n    \"participantLimit\": 300,\r\n    \"requestModeration\": false,\r\n    \"title\": \"Супер новинка\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/users/64/events",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "users",
-            "64",
-            "events"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Запрашиваем список на модерацию",
+      "name": "Запрос списка событий на модерацию",
       "event": [
         {
           "listen": "test",
@@ -211,12 +17,6 @@
               "    pm.response.to.be.ok;    \r",
               "    pm.response.to.be.withBody;\r",
               "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"В списке модерации должно быть одно событие\", function () {\r",
-              "    pm.expect(target.length).to.eql(12);\r",
               "});"
             ],
             "type": "text/javascript"
@@ -227,412 +27,10 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:8080/admin/events/moderation",
-          "protocol": "http",
+          "raw": "{{baseUrl}}/admin/events/moderation",
           "host": [
-            "localhost"
+            "{{baseUrl}}"
           ],
-          "port": "8080",
-          "path": [
-            "admin",
-            "events",
-            "moderation"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Error. Отклоняем заявку с неверным статусом модерации",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
-              "    pm.response.to.have.status(409);    \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Ответ должен содержать поля\", function () {\r",
-              "    pm.expect(target).to.have.property('reason');\r",
-              "    pm.expect(target).to.have.property('status');\r",
-              "    pm.expect(target).to.have.property('message');\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/admin/events/:eventId/moderation?state=CANCEL_REVIEW&comment=ошибка в заголовке события",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "admin",
-            "events",
-            ":eventId",
-            "moderation"
-          ],
-          "query": [
-            {
-              "key": "state",
-              "value": "CANCEL_REVIEW"
-            },
-            {
-              "key": "comment",
-              "value": "ошибка в заголовке события"
-            }
-          ],
-          "variable": [
-            {
-              "key": "eventId",
-              "value": "39"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Error. Отклоняем заявку без комментария модератора",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
-              "    pm.response.to.have.status(409);    \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Ответ должен содержать поля\", function () {\r",
-              "    pm.expect(target).to.have.property('reason');\r",
-              "    pm.expect(target).to.have.property('status');\r",
-              "    pm.expect(target).to.have.property('message');\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/admin/events/:eventId/moderation?state=REJECT_EVENT",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "admin",
-            "events",
-            ":eventId",
-            "moderation"
-          ],
-          "query": [
-            {
-              "key": "state",
-              "value": "REJECT_EVENT"
-            }
-          ],
-          "variable": [
-            {
-              "key": "eventId",
-              "value": "39"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Отклоняем заявку на модерацию",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-              "    pm.response.to.be.ok;    \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Значения полей события должно соответствовать значениям\", function () {\r",
-              "    pm.expect(target.state).to.eql(\"CANCELED\");\r",
-              "    pm.expect(target.moderation[0].comment).to.eql(\"ошибка в заголовке события\");\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/admin/events/:eventId/moderation?state=REJECT_EVENT&comment=ошибка в заголовке события",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "admin",
-            "events",
-            ":eventId",
-            "moderation"
-          ],
-          "query": [
-            {
-              "key": "state",
-              "value": "REJECT_EVENT"
-            },
-            {
-              "key": "comment",
-              "value": "ошибка в заголовке события"
-            }
-          ],
-          "variable": [
-            {
-              "key": "eventId",
-              "value": "39"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Error. Повторное отклонение заявки на модерацию",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
-              "    pm.response.to.have.status(409);    \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Ответ должен содержать поля\", function () {\r",
-              "    pm.expect(target).to.have.property('reason');\r",
-              "    pm.expect(target).to.have.property('status');\r",
-              "    pm.expect(target).to.have.property('message');\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/admin/events/:eventId/moderation?state=REJECT_EVENT&comment=ошибка в заголовке события",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "admin",
-            "events",
-            ":eventId",
-            "moderation"
-          ],
-          "query": [
-            {
-              "key": "state",
-              "value": "REJECT_EVENT"
-            },
-            {
-              "key": "comment",
-              "value": "ошибка в заголовке события"
-            }
-          ],
-          "variable": [
-            {
-              "key": "eventId",
-              "value": "39"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Запрос полной информации о событии",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-              "    pm.response.to.be.ok;    \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Значения полей события должно соответствовать значениям\", function () {\r",
-              "    pm.expect(target.state).to.eql(\"CANCELED\");\r",
-              "    pm.expect(target.moderation[0].comment).to.eql(\"ошибка в заголовке события\");\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/users/:userId/events/:eventId",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "users",
-            ":userId",
-            "events",
-            ":eventId"
-          ],
-          "variable": [
-            {
-              "key": "userId",
-              "value": "64"
-            },
-            {
-              "key": "eventId",
-              "value": "39"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Обновляем событие от имени пользователя",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-              "    pm.response.to.be.ok;    \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Значения полей события должно соответствовать значениям\", function () {\r",
-              "    pm.expect(target.state).to.eql(\"PENDING\");\r",
-              "    pm.expect(target.title).to.eql(\"Исправленное название события\");\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "PATCH",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"title\": \"Исправленное название события\",\r\n    \"stateAction\": \"SEND_TO_REVIEW\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/users/:userId/events/:eventId",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "users",
-            ":userId",
-            "events",
-            ":eventId"
-          ],
-          "variable": [
-            {
-              "key": "userId",
-              "value": "64"
-            },
-            {
-              "key": "eventId",
-              "value": "39"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Повторный запрос списка на модерацию",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-              "    pm.response.to.be.ok;    \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"В списке модерации должно быть одно событие\", function () {\r",
-              "    pm.expect(target.length).to.eql(12);\r",
-              "    pm.expect(target[11].state).to.eql(\"PENDING\");\r",
-              "    pm.expect(target[11].title).to.eql(\"Исправленное название события\");\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/admin/events/moderation",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
           "path": [
             "admin",
             "events",
@@ -663,18 +61,63 @@
             ],
             "type": "text/javascript"
           }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const main = async () => {\r",
+              "    const api = new API(pm);\r",
+              "    const rnd = new RandomUtils();\r",
+              "\r",
+              "    try {\r",
+              "        const user = await api.addUser(rnd.getUser());\r",
+              "        const category = await api.addCategory(rnd.getCategory());\r",
+              "        const event = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
+              "        pm.collectionVariables.set(\"eid\", event.id);\r",
+              "    } catch(err) {\r",
+              "        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "const interval = setInterval(() => {}, 1000);\r",
+              "\r",
+              "setTimeout(async () => \r",
+              "    {\r",
+              "        try {\r",
+              "            await main();\r",
+              "        } catch (e) {\r",
+              "            console.error(e);\r",
+              "        } finally {\r",
+              "            clearInterval(interval);\r",
+              "        }\r",
+              "    },  \r",
+              "    100 \r",
+              ");"
+            ],
+            "type": "text/javascript"
+          }
         }
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
         "url": {
-          "raw": "http://localhost:8080/admin/events/:eventId/moderation?state=PUBLISH_EVENT",
-          "protocol": "http",
+          "raw": "{{baseUrl}}/admin/events/:eventId/moderation?state=PUBLISH_EVENT",
           "host": [
-            "localhost"
+            "{{baseUrl}}"
           ],
-          "port": "8080",
           "path": [
             "admin",
             "events",
@@ -690,7 +133,428 @@
           "variable": [
             {
               "key": "eventId",
-              "value": "39"
+              "value": "{{eid}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Отклоняем заявку на модерацию",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const main = async () => {\r",
+              "    const api = new API(pm);\r",
+              "    const rnd = new RandomUtils();\r",
+              "\r",
+              "    try {\r",
+              "        const user = await api.addUser(rnd.getUser());\r",
+              "        const category = await api.addCategory(rnd.getCategory());\r",
+              "        const event = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
+              "        pm.collectionVariables.set(\"eid\", event.id);\r",
+              "    } catch(err) {\r",
+              "        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "const interval = setInterval(() => {}, 1000);\r",
+              "\r",
+              "setTimeout(async () => \r",
+              "    {\r",
+              "        try {\r",
+              "            await main();\r",
+              "        } catch (e) {\r",
+              "            console.error(e);\r",
+              "        } finally {\r",
+              "            clearInterval(interval);\r",
+              "        }\r",
+              "    },  \r",
+              "    100 \r",
+              ");"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+              "    pm.response.to.be.ok;    \r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "const target = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Значения полей события должно соответствовать значениям\", function () {\r",
+              "    pm.expect(target.state).to.eql(\"CANCELED\");\r",
+              "    pm.expect(target.moderation[0].comment).to.eql(\"ошибка в заголовке события\");\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/admin/events/:eventId/moderation?state=REJECT_EVENT&comment=ошибка в заголовке события",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "admin",
+            "events",
+            ":eventId",
+            "moderation"
+          ],
+          "query": [
+            {
+              "key": "state",
+              "value": "REJECT_EVENT"
+            },
+            {
+              "key": "comment",
+              "value": "ошибка в заголовке события"
+            }
+          ],
+          "variable": [
+            {
+              "key": "eventId",
+              "value": "{{eid}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Error. Отклоняем заявку с неверным статусом модерации",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+              "    pm.response.to.have.status(409);    \r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "const target = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Ответ должен содержать поля\", function () {\r",
+              "    pm.expect(target).to.have.property('reason');\r",
+              "    pm.expect(target).to.have.property('status');\r",
+              "    pm.expect(target).to.have.property('message');\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const main = async () => {\r",
+              "    const api = new API(pm);\r",
+              "    const rnd = new RandomUtils();\r",
+              "\r",
+              "    try {\r",
+              "        const user = await api.addUser(rnd.getUser());\r",
+              "        const category = await api.addCategory(rnd.getCategory());\r",
+              "        const event = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
+              "        pm.collectionVariables.set(\"eid\", event.id);\r",
+              "    } catch(err) {\r",
+              "        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "const interval = setInterval(() => {}, 1000);\r",
+              "\r",
+              "setTimeout(async () => \r",
+              "    {\r",
+              "        try {\r",
+              "            await main();\r",
+              "        } catch (e) {\r",
+              "            console.error(e);\r",
+              "        } finally {\r",
+              "            clearInterval(interval);\r",
+              "        }\r",
+              "    },  \r",
+              "    100 \r",
+              ");"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/admin/events/:eventId/moderation?state=CANCEL_REVIEW&comment=ошибка в заголовке события",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "admin",
+            "events",
+            ":eventId",
+            "moderation"
+          ],
+          "query": [
+            {
+              "key": "state",
+              "value": "CANCEL_REVIEW"
+            },
+            {
+              "key": "comment",
+              "value": "ошибка в заголовке события"
+            }
+          ],
+          "variable": [
+            {
+              "key": "eventId",
+              "value": "{{eid}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Error. Отклоняем заявку без комментария модератора",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+              "    pm.response.to.have.status(409);    \r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "const target = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Ответ должен содержать поля\", function () {\r",
+              "    pm.expect(target).to.have.property('reason');\r",
+              "    pm.expect(target).to.have.property('status');\r",
+              "    pm.expect(target).to.have.property('message');\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const main = async () => {\r",
+              "    const api = new API(pm);\r",
+              "    const rnd = new RandomUtils();\r",
+              "\r",
+              "    try {\r",
+              "        const user = await api.addUser(rnd.getUser());\r",
+              "        const category = await api.addCategory(rnd.getCategory());\r",
+              "        const event = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
+              "        pm.collectionVariables.set(\"eid\", event.id);\r",
+              "    } catch(err) {\r",
+              "        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "const interval = setInterval(() => {}, 1000);\r",
+              "\r",
+              "setTimeout(async () => \r",
+              "    {\r",
+              "        try {\r",
+              "            await main();\r",
+              "        } catch (e) {\r",
+              "            console.error(e);\r",
+              "        } finally {\r",
+              "            clearInterval(interval);\r",
+              "        }\r",
+              "    },  \r",
+              "    100 \r",
+              ");"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/admin/events/:eventId/moderation?state=REJECT_EVENT",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "admin",
+            "events",
+            ":eventId",
+            "moderation"
+          ],
+          "query": [
+            {
+              "key": "state",
+              "value": "REJECT_EVENT"
+            }
+          ],
+          "variable": [
+            {
+              "key": "eventId",
+              "value": "{{eid}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Error. Повторное отклонение заявки на модерацию",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+              "    pm.response.to.have.status(409);    \r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "const target = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Ответ должен содержать поля\", function () {\r",
+              "    pm.expect(target).to.have.property('reason');\r",
+              "    pm.expect(target).to.have.property('status');\r",
+              "    pm.expect(target).to.have.property('message');\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const main = async () => {\r",
+              "    const api = new API(pm);\r",
+              "    const rnd = new RandomUtils();\r",
+              "\r",
+              "    try {\r",
+              "        const user = await api.addUser(rnd.getUser());\r",
+              "        const category = await api.addCategory(rnd.getCategory());\r",
+              "        const event = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
+              "        const moderation = await api.sendModerationRequest(event.id, \"REJECT_EVENT\", \"ошибка в заголовке события\");\r",
+              "        pm.collectionVariables.set(\"eid\", event.id);\r",
+              "\r",
+              "    } catch(err) {\r",
+              "        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "const interval = setInterval(() => {}, 1000);\r",
+              "\r",
+              "setTimeout(async () => \r",
+              "    {\r",
+              "        try {\r",
+              "            await main();\r",
+              "        } catch (e) {\r",
+              "            console.error(e);\r",
+              "        } finally {\r",
+              "            clearInterval(interval);\r",
+              "        }\r",
+              "    },  \r",
+              "    100 \r",
+              ");"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/admin/events/:eventId/moderation?state=REJECT_EVENT&comment=ошибка в заголовке события",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "admin",
+            "events",
+            ":eventId",
+            "moderation"
+          ],
+          "query": [
+            {
+              "key": "state",
+              "value": "REJECT_EVENT"
+            },
+            {
+              "key": "comment",
+              "value": "ошибка в заголовке события"
+            }
+          ],
+          "variable": [
+            {
+              "key": "eventId",
+              "value": "{{eid}}"
             }
           ]
         }
@@ -720,11 +584,60 @@
             ],
             "type": "text/javascript"
           }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const main = async () => {\r",
+              "    const api = new API(pm);\r",
+              "    const rnd = new RandomUtils();\r",
+              "\r",
+              "    try {\r",
+              "        const user = await api.addUser(rnd.getUser());\r",
+              "        const category = await api.addCategory(rnd.getCategory());\r",
+              "        const event = await api.addEvent(user.id, rnd.getEvent(category.id));\r",
+              "        const moderation = await api.sendModerationRequest(event.id, \"PUBLISH_EVENT\", \"\");\r",
+              "        pm.collectionVariables.set(\"eid\", event.id);\r",
+              "\r",
+              "    } catch(err) {\r",
+              "        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "const interval = setInterval(() => {}, 1000);\r",
+              "\r",
+              "setTimeout(async () => \r",
+              "    {\r",
+              "        try {\r",
+              "            await main();\r",
+              "        } catch (e) {\r",
+              "            console.error(e);\r",
+              "        } finally {\r",
+              "            clearInterval(interval);\r",
+              "        }\r",
+              "    },  \r",
+              "    100 \r",
+              ");"
+            ],
+            "type": "text/javascript"
+          }
         }
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
         "url": {
           "raw": "http://localhost:8080/admin/events/:eventId/moderation?state=PUBLISH_EVENT",
           "protocol": "http",
@@ -747,66 +660,203 @@
           "variable": [
             {
               "key": "eventId",
-              "value": "39"
+              "value": "{{eid}}"
             }
           ]
         }
       },
       "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "API = class {",
+          "    constructor(postman, verbose = false, baseUrl = \"http://localhost:8080\") {",
+          "        this.baseUrl = baseUrl;",
+          "        this.pm = postman;",
+          "        this._verbose = verbose;",
+          "    }",
+          "",
+          "    async sendModerationRequest(eventId, state, comment, verbose=null) {",
+          "        return this.post(\"/admin/events/\" + eventId + \"/moderation?state=\" + state + \"&comment=\" + comment, null, \"Ошибка при отправке запроса на модерацию\", verbose);",
+          "    }",
+          "",
+          "    async addUser(user, verbose=null) {",
+          "        return this.post(\"/admin/users\", user, \"Ошибка при добавлении нового пользователя: \", verbose);",
+          "    }",
+          "",
+          "    async addCategory(category, verbose=null) {",
+          "        return this.post(\"/admin/categories\", category, \"Ошибка при добавлении новой категории: \", verbose);",
+          "    }",
+          "",
+          "    async addEvent(userId, event, verbose=null) {",
+          "        return this.post(\"/users/\" + userId + \"/events\", event, \"Ошибка при добавлении нового события: \", verbose);",
+          "    }",
+          "",
+          "    async addCompilation(compilation, verbose=null) {",
+          "        return this.post(\"/admin/compilations\", compilation, \"Ошибка при добавлении новой подборки: \", verbose);",
+          "    }",
+          "",
+          "    async publishParticipationRequest(eventId, userId, verbose=null) {",
+          "        return this.post('/users/' + userId + '/requests?eventId=' + eventId, null, \"Ошибка при добавлении нового запроса на участие в событии\", verbose);",
+          "    }",
+          "",
+          "    async publishEvent(eventId, verbose=null) {",
+          "        return this.patch('/admin/events/' + eventId, {stateAction: \"PUBLISH_EVENT\"}, \"Ошибка при публикации события\", verbose);",
+          "    }",
+          "    ",
+          "    async rejectEvent(eventId, verbose=null) {",
+          "        return this.patch('/admin/events/' + eventId, {stateAction: \"REJECT_EVENT\"}, \"Ошибка при отмене события\", verbose);",
+          "    }",
+          "",
+          "    async acceptParticipationRequest(eventId, userId, reqId, verbose=null) {",
+          "        return this.patch('/users/' + userId + '/events/' + eventId + '/requests/', {requestIds:[reqId], status: \"CONFIRMED\"}, \"Ошибка при принятии заявки на участие в событии\", verbose);",
+          "    }",
+          "",
+          "    async findCategory(catId, verbose=null) {",
+          "        return this.get('/categories/' + catId, null, \"Ошибка при поиске категории по id\", verbose);",
+          "    }",
+          "",
+          "    async findCompilation(compId, verbose=null) {",
+          "        return this.get('/compilations/' + compId, null, \"Ошибка при поиске подборки по id\", verbose);",
+          "    }",
+          "",
+          "    async findUser(userId, verbose=null) {",
+          "        return this.get('/admin/users?ids=' + userId, null, \"Ошибка при поиске пользователя по id\", verbose);",
+          "    }",
+          "",
+          "    async post(path, body, errorText = \"Ошибка при выполнении post-запроса: \", verbose=null) {",
+          "        return this.sendRequest(\"POST\", path, body, errorText, verbose);",
+          "    }",
+          "",
+          "    async patch(path, body = null, errorText = \"Ошибка при выполнении patch-запроса: \", verbose=null) {",
+          "        return this.sendRequest(\"PATCH\", path, body, errorText, verbose);",
+          "    }",
+          "",
+          "    async get(path, body = null, errorText = \"Ошибка при выполнении get-запроса: \", verbose=null) {",
+          "        return this.sendRequest(\"GET\", path, body, errorText, verbose);",
+          "    }",
+          "",
+          "    async sendRequest(method, path, body=null, errorText = \"Ошибка при выполнении запроса: \", verbose=null) {",
+          "        return new Promise((resolve, reject) => {",
+          "            verbose = verbose == null ? this._verbose : verbose;",
+          "",
+          "            const request = {",
+          "                url: this.baseUrl + path,",
+          "                method: method,",
+          "                body: body == null ? \"\" : JSON.stringify(body),",
+          "                header: { \"Content-Type\": \"application/json\" },",
+          "            };",
+          "",
+          "            if(verbose) {",
+          "                console.log(\"Отправляю запрос: \", request);",
+          "            }",
+          "",
+          "            try {",
+          "                this.pm.sendRequest(request, (error, response) => {",
+          "                    if(error || (response.code >= 400 && response.code <= 599)) {",
+          "                        let err = error ? error : JSON.stringify(response.json());",
+          "                        console.error(\"При выполнении запроса к серверу возникла ошика.\\n\", err,",
+          "                             \"\\nДля отладки проблемы повторите такой же запрос к вашей программе \" + ",
+          "                             \"на локальном компьютере. Данные запроса:\\n\", JSON.stringify(request));",
+          "",
+          "                        reject(new Error(errorText + err));",
+          "                    }",
+          "",
+          "                    if(verbose) {",
+          "                        console.log(\"Результат обработки запроса: код состояния - \", response.code, \", тело: \", response.json());",
+          "                    }",
+          "",
+          "                    resolve(response.json());",
+          "                });",
+          "            } catch(err) {",
+          "                if(verbose) {",
+          "                    console.error(errorText, err);",
+          "                }",
+          "                return Promise.reject(err);",
+          "            }",
+          "        });",
+          "    }",
+          "};",
+          "",
+          "RandomUtils = class {",
+          "    constructor() {}",
+          "",
+          "    getUser() {",
+          "        return {",
+          "            name: pm.variables.replaceIn('{{$randomFullName}}'),",
+          "            email: pm.variables.replaceIn('{{$randomEmail}}')",
+          "        };",
+          "    }",
+          "",
+          "    getCategory() {",
+          "        return {",
+          "            name: pm.variables.replaceIn('{{$randomWord}}') + Math.floor(Math.random() * 100).toString()",
+          "        };",
+          "    }",
+          "",
+          "    getEvent(categoryId) {",
+          "        return {",
+          "            annotation: pm.variables.replaceIn('{{$randomLoremParagraph}}'),",
+          "            category: categoryId,",
+          "            description: pm.variables.replaceIn('{{$randomLoremParagraphs}}'),",
+          "            eventDate: this.getFutureDateTime(),",
+          "            location: {",
+          "                lat: parseFloat(pm.variables.replaceIn('{{$randomLatitude}}')),",
+          "                lon: parseFloat(pm.variables.replaceIn('{{$randomLongitude}}')),",
+          "            },",
+          "            paid: pm.variables.replaceIn('{{$randomBoolean}}'),",
+          "            participantLimit: pm.variables.replaceIn('{{$randomInt}}'),",
+          "            requestModeration: pm.variables.replaceIn('{{$randomBoolean}}'),",
+          "            title: pm.variables.replaceIn('{{$randomLoremSentence}}'),",
+          "        }",
+          "    }",
+          "",
+          "    getCompilation(...eventIds) {",
+          "        return {",
+          "            title: pm.variables.replaceIn('{{$randomLoremSentence}}'),",
+          "            pinned: pm.variables.replaceIn('{{$randomBoolean}}'),",
+          "            events: eventIds",
+          "        };",
+          "    }",
+          "",
+          "    getFutureDateTime(hourShift = 5, minuteShift=0, yearShift=0) {",
+          "        let moment = require('moment');",
+          "",
+          "        let m = moment();",
+          "        m.add(hourShift, 'hour');",
+          "        m.add(minuteShift, 'minute');",
+          "        m.add(yearShift, 'year');",
+          "",
+          "        return m.format('YYYY-MM-DD HH:mm:ss');",
+          "    }",
+          "}"
+        ]
+      }
     },
     {
-      "name": "Повторный запрос полной информации о событии",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-              "    pm.response.to.be.ok;    \r",
-              "    pm.response.to.be.withBody;\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "const target = pm.response.json();\r",
-              "\r",
-              "pm.test(\"Значения полей в ответе должны быть\", function () {\r",
-              "    pm.expect(target.state).to.eql(\"PUBLISHED\");\r",
-              "    pm.expect(target.title).to.eql(\"Исправленное название события\");\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/users/:userId/events/:eventId",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "users",
-            ":userId",
-            "events",
-            ":eventId"
-          ],
-          "variable": [
-            {
-              "key": "userId",
-              "value": "64"
-            },
-            {
-              "key": "eventId",
-              "value": "39"
-            }
-          ]
-        }
-      },
-      "response": []
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "eid",
+      "value": "1"
+    },
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
     }
   ]
 }

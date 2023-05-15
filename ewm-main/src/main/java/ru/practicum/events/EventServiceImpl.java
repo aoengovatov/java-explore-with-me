@@ -219,7 +219,6 @@ public class EventServiceImpl implements EventService {
                 if (checkNullOrBlank(comment)) {
                     eventModeration.setEventId(eventId);
                     eventModeration.setComment(comment);
-                    eventModeration.setDateTime(LocalDateTime.now());
                 } else {
                     throw new FieldValidationException("Field comment not be null of blank when state moderation is " +
                             "REJECT_EVENT");

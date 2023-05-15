@@ -1,6 +1,10 @@
 package ru.practicum.request.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.practicum.request.RequestStatus;
 
 import javax.persistence.*;
@@ -25,6 +29,7 @@ public class Request {
     @Column(name = "requester_id", nullable = false)
     private Long requesterId;
 
+    @CreationTimestamp
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 

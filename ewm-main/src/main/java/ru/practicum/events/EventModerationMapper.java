@@ -11,10 +11,4 @@ public class EventModerationMapper {
         return new EventModerationDto(eventModeration.getComment(),
                 eventModeration.getDateTime());
     }
-
-//    public List<EventModerationDto> listToDto(List<EventModeration> dto) {
-//        return dto.stream()
-//                .map(EventModerationMapper::toDto)
-//                .collect(Collectors.toList());
-//    }
 }

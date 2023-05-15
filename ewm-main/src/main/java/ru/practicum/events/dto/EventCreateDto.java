@@ -51,6 +51,4 @@ public class EventCreateDto {
     @NotBlank
     @Size(max = 255)
     private String title;
-
-    //private EventStateAction state;
 }

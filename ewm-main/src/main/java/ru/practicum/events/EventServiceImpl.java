@@ -84,8 +84,6 @@ public class EventServiceImpl implements EventService {
         LocationDto location = locationService.add(locationCreateDto);
         Event event = EventMapper.createDtoToEvent(user, category, location, dto);
         event.setState(EventStatus.PENDING);
-        event.setCreatedOn(LocalDateTime.now());
-        event.setLastUpdate(LocalDateTime.now());
         eventRepository.save(event);
         EventDto eventDto = EventMapper.eventToEventDto(event);
         eventDto.setViews(0);
@@ -101,7 +99,6 @@ public class EventServiceImpl implements EventService {
         checkEventStatusBeforeUpdate(event.getState());
         userService.getById(userId);
         updateEventFields(event, dto);
-        event.setLastUpdate(LocalDateTime.now());
         EventDto eventDto = EventMapper.eventToEventDto(event);
         setViewsByEventsDto(List.of(eventDto));
         return eventDto;

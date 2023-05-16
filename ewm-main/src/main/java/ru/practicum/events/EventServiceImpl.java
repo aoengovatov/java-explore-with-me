@@ -17,6 +17,7 @@ import ru.practicum.events.dto.EventCreateDto;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventUpdateDto;
 import ru.practicum.events.model.Event;
+import ru.practicum.events.model.EventModeration;
 import ru.practicum.exception.CheckStatusException;
 import ru.practicum.exception.EntityNotFoundException;
 import ru.practicum.exception.FieldValidationException;
@@ -50,6 +51,7 @@ public class EventServiceImpl implements EventService {
     private final LocationService locationService;
     private final StatClient statClient;
     private final RequestRepository requestRepository;
+    private final EventModerationRepository eventModerationRepository;
 
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -58,7 +60,9 @@ public class EventServiceImpl implements EventService {
                             UserService userService,
                             CategoryService categoryService,
                             LocationService locationService,
-                            StatClient statClient, RequestRepository requestRepository) {
+                            StatClient statClient,
+                            RequestRepository requestRepository,
+                            EventModerationRepository eventModerationRepository) {
         this.eventRepository = eventRepository;
         this.userService = userService;
         this.categoryService = categoryService;
@@ -66,6 +70,7 @@ public class EventServiceImpl implements EventService {
         this.statClient = statClient;
         this.appName = appName;
         this.requestRepository = requestRepository;
+        this.eventModerationRepository = eventModerationRepository;
     }
 
     @Override
@@ -79,7 +84,6 @@ public class EventServiceImpl implements EventService {
         LocationDto location = locationService.add(locationCreateDto);
         Event event = EventMapper.createDtoToEvent(user, category, location, dto);
         event.setState(EventStatus.PENDING);
-        event.setCreatedOn(LocalDateTime.now());
         eventRepository.save(event);
         EventDto eventDto = EventMapper.eventToEventDto(event);
         eventDto.setViews(0);
@@ -154,8 +158,10 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional(readOnly = true)
     public EventDto getEventInfoByUser(Long eventId, Long userId) {
-        return EventMapper.eventToEventDto(eventRepository.getByIdAndInitiatorId(eventId, userId)
+        EventDto eventDto = EventMapper.eventToEventDto(eventRepository.getByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() -> new EntityNotFoundException(Event.class, eventId)));
+        getModerationCommentsByEvent(List.of(eventDto));
+        return eventDto;
     }
 
     @Override
@@ -181,6 +187,75 @@ public class EventServiceImpl implements EventService {
             return Collections.emptyList();
         }
         return addViewsAndConfirmedRequests(events);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<EventDto> getByModeration() {
+        List<Event> events = eventRepository.findEventByStateOrderByLastUpdateAsc(
+                EventStatus.PENDING);
+        if (events.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<EventDto> eventDtos = events.stream()
+                .map(EventMapper::eventToEventDto)
+                .collect(toList());
+        getModerationCommentsByEvent(eventDtos);
+        return eventDtos;
+    }
+
+    @Override
+    @Transactional
+    public EventDto addModerationResolve(Long eventId, EventStateAction state, String comment) {
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException(Event.class, eventId));
+        EventModeration eventModeration = new EventModeration();
+        switch (state) {
+            case PUBLISH_EVENT:
+                break;
+            case REJECT_EVENT:
+                if (event.getState().equals(EventStatus.CANCELED)) {
+                    throw new CheckStatusException("The request from double canceled is not valid");
+                }
+                if (checkNullOrBlank(comment)) {
+                    eventModeration.setEventId(eventId);
+                    eventModeration.setComment(comment);
+                } else {
+                    throw new FieldValidationException("Field comment not be null of blank when state moderation is " +
+                            "REJECT_EVENT");
+                }
+                break;
+            default:
+                throw new CheckStatusException("State moderation is not valid. Check state and repeat the request.");
+        }
+        EventUpdateDto eventUpdate = new EventUpdateDto();
+        eventUpdate.setStateAction(state);
+        updateEventFields(event, eventUpdate);
+        EventDto eventDto = EventMapper.eventToEventDto(event);
+        if (checkNullOrBlank(eventModeration.getComment())) {
+            eventModerationRepository.save(eventModeration);
+        }
+        getModerationCommentsByEvent(List.of(eventDto));
+        return eventDto;
+    }
+
+    private void getModerationCommentsByEvent(List<EventDto> eventDtos) {
+        List<Long> ids = eventDtos.stream()
+                .map(EventDto::getId)
+                .collect(toList());
+        List<EventModeration> moderEvents = eventModerationRepository.findAllByEventIdIn(ids);
+        Map<Long, List<EventModeration>> moderationEvents = moderEvents.stream()
+                .collect(Collectors.groupingBy(EventModeration::getEventId, Collectors.toList()));
+
+        if (!moderationEvents.isEmpty()) {
+            for (Long eventId : moderationEvents.keySet()) {
+                for (EventDto dto : eventDtos) {
+                    if (Objects.equals(dto.getId(), eventId)) {
+                        dto.setModeration(moderationEvents.get(eventId).stream()
+                                .map(EventModerationMapper::toDto).collect(toList()));
+                    }
+                }
+            }
+        }
     }
 
     private void checkDate(LocalDateTime eventDate) {
@@ -338,7 +413,6 @@ public class EventServiceImpl implements EventService {
                 } else {
                     event.setConfirmedRequests(0);
                 }
-
             }
         }
     }

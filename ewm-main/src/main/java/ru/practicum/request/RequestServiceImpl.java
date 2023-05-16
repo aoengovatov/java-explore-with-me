@@ -15,7 +15,6 @@ import ru.practicum.request.dto.RequestUpdateStatusResultDto;
 import ru.practicum.request.model.Request;
 import ru.practicum.users.UserService;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +48,6 @@ public class RequestServiceImpl implements RequestService {
         } else {
             request.setState(RequestStatus.PENDING);
         }
-        request.setCreated(LocalDateTime.now());
         return RequestMapper.requestToRequestDto(requestRepository.save(request));
     }
 

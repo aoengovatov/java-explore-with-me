@@ -1,6 +1,11 @@
 package ru.practicum.events.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.practicum.categories.model.Category;
 import ru.practicum.events.EventStatus;
 import ru.practicum.location.model.Location;
@@ -43,11 +48,16 @@ public class Event {
     @Column(name = "event_date", nullable = false)
     private LocalDateTime eventDate;
 
+    @CreationTimestamp
     @Column(name = "created_on", nullable = false)
     private LocalDateTime createdOn;
 
     @Column(name = "published_on", nullable = false)
     private LocalDateTime publishedOn;
+
+    @UpdateTimestamp
+    @Column(name = "last_update", nullable = false)
+    private LocalDateTime lastUpdate;
 
     @Column(name = "paid", nullable = false)
     private boolean paid;

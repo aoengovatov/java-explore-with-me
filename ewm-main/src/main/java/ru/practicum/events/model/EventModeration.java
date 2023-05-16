@@ -1,22 +1,21 @@
-package ru.practicum.request.model;
+package ru.practicum.events.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import ru.practicum.request.RequestStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "requests")
+@Table(name = "moderation_events")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Request {
+public class EventModeration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +25,10 @@ public class Request {
     @Column(name = "event_id", nullable = false)
     private Long eventId;
 
-    @Column(name = "requester_id", nullable = false)
-    private Long requesterId;
+    @Column(name = "comment", nullable = false)
+    private String comment;
 
     @CreationTimestamp
-    @Column(name = "created", nullable = false)
-    private LocalDateTime created;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private RequestStatus state;
+    @Column(name = "datetime", nullable = false)
+    private LocalDateTime dateTime;
 }
